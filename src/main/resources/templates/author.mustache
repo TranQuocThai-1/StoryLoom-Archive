@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books by {{authorName}} - StoryLoom Digital Archive</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+        
+        <h1 class="category-page-title">Books by {{authorName}}</h1>
+
+        <div class="catalog-columns">
+            
+            <div class="catalog-control-block top-controls">
+                <div class="catalog-sort">
+                    <form action="/author" method="GET" style="margin: 0;">
+                        <input type="hidden" name="name" value="{{authorName}}">
+                        <input type="hidden" name="page" value="1"> 
+                        <label for="sortBooks">Sort By:</label>
+                        <select id="sortBooks" name="sort" onchange="this.form.submit()">
+                            <option value="popularity" {{#sortPopularity}}selected{{/sortPopularity}}>Popularity</option>
+                            <option value="alphabetical" {{#sortAlphabetical}}selected{{/sortAlphabetical}}>Alphabetical</option>
+                            <option value="date" {{#sortDate}}selected{{/sortDate}}>Release Date</option>
+                        </select>
+                    </form>
+                </div>
+                
+                <div class="catalog-pagination">
+                    Displaying results {{displayStart}}–{{displayEnd}} of {{totalResults}} 
+                    {{#hasPrev}} | <a href="/author?name={{encodedAuthor}}&page={{prevPage}}&sort={{currentSort}}">Previous</a>{{/hasPrev}}
+                    {{#hasNext}} | <a href="/author?name={{encodedAuthor}}&page={{nextPage}}&sort={{currentSort}}">Next</a>{{/hasNext}}
+                </div>
+            </div>
+
+            {{#books}}
+            <div class="catalog-book-item">
+                {{#coverImagePath}}
+                    <img src="http://127.0.0.1:9000/storyloom-archive/{{coverImagePath}}" alt="Cover" class="catalog-book-cover">
+                {{/coverImagePath}}
+                {{^coverImagePath}}
+                    <div class="catalog-book-cover-placeholder" style="width: 85px; height: 125px; background: #e0e0e0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; color: #666;">No Cover</div>
+                {{/coverImagePath}}
+                
+                <div class="catalog-book-info">
+                    <a href="/book/{{id}}" class="catalog-book-title">{{title}}</a>
+                    <span class="catalog-book-author">{{authorName}}</span>
+                    <span class="catalog-book-downloads">{{downloadCount}} downloads</span>
+                </div>
+            </div>
+            {{/books}}
+
+            {{^books}}
+            <div style="grid-column: 1 / -1; padding: 20px; font-style: italic; color: #666;">
+                We couldn't find any books by this author in the archive.
+            </div>
+            {{/books}}
+
+            <div class="catalog-control-block bottom-controls">
+                <div class="catalog-pagination">
+                    Displaying results {{displayStart}}–{{displayEnd}} of {{totalResults}} 
+                    {{#hasPrev}} | <a href="/author?name={{encodedAuthor}}&page={{prevPage}}&sort={{currentSort}}">Previous</a>{{/hasPrev}}
+                    {{#hasNext}} | <a href="/author?name={{encodedAuthor}}&page={{nextPage}}&sort={{currentSort}}">Next</a>{{/hasNext}}
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    {{> footer}}
+
+</body>
+</html>

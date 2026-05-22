@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - StoryLoom Digital Archive</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body, main, table { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+        .selection-box { margin: 25px 0; padding: 15px; border: 1px solid #d3d3d3; background-color: #f8f9fa; }
+        .selection-box ul { list-style-type: none; padding-left: 10px; margin: 10px 0; }
+        .selection-box u { font-weight: normal; }
+        .gutenberg-results-table { width: 100%; border-collapse: collapse; font-size: 0.95em; margin-bottom: 20px; border-top: 2px solid #000; border-bottom: 2px solid #000; }
+        .gutenberg-results-table th { background-color: #f2eee6; text-align: center; padding: 8px; font-weight: bold; border: 1px solid #000; }
+        .gutenberg-results-table td { padding: 8px 12px; border: 1px solid #000; vertical-align: top; }
+        .gutenberg-results-table a { color: #0056b3; text-decoration: underline; }
+        .gutenberg-results-table a:hover { color: #003d82; }
+        .pagination-center { text-align: center; margin: 20px 0; color: #0056b3; font-size: 0.95em; }
+        .pagination-center a { color: #0056b3; text-decoration: underline; padding: 0 5px; }
+        .pagination-center u { font-weight: bold; color: #000; text-decoration: none; padding: 0 5px; }
+        .warning-text { color: #d9534f; font-weight: bold; margin-top: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+
+        <div class="selection-box">
+            <p style="margin: 0;">You selected:</p>
+            <ul>
+                <li>• <u>{{selectionText}}</u> ({{totalResults}} items match)</li>
+            </ul>
+            <p style="margin: 0;">{{totalResults}} books found.</p>
+        </div>
+
+        {{#tooManyResults}}
+            <p class="warning-text">More than 1000 books matched your search. Please refine your query to see results.</p>
+        {{/tooManyResults}}
+
+        {{^tooManyResults}}
+            <div class="pagination-center">
+                {{#pages}}
+                    {{#isCurrent}}<u>{{num}}</u>{{/isCurrent}}
+                    {{^isCurrent}}<a href="/search/results?title={{titleQuery}}&author={{authorQuery}}&subject={{subjectQuery}}&language={{languageQuery}}&page={{num}}">{{num}}</a>{{/isCurrent}}
+                {{/pages}}
+                {{#hasNext}}<a href="/search/results?title={{titleQuery}}&author={{authorQuery}}&subject={{subjectQuery}}&language={{languageQuery}}&page={{nextPage}}">next</a>{{/hasNext}}
+            </div>
+
+            <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">Titles</div>
+
+            <table class="gutenberg-results-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Author</th>
+                        <th style="width: 50%;">Title</th>
+                        <th style="width: 10%;">Language</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#books}}
+                    <tr>
+                        <td>• <a href="/search/results?author={{authorName}}">{{authorName}}</a></td>
+                        <td><a href="/book/{{id}}">{{title}}</a></td>
+                        <td>{{language}}</td>
+                    </tr>
+                    {{/books}}
+                    
+                    {{^books}}
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 20px;">No matches found for your search criteria.</td>
+                    </tr>
+                    {{/books}}
+                </tbody>
+            </table>
+
+            <div class="pagination-center">
+                {{#pages}}
+                    {{#isCurrent}}<u>{{num}}</u>{{/isCurrent}}
+                    {{^isCurrent}}<a href="/search/results?title={{titleQuery}}&author={{authorQuery}}&subject={{subjectQuery}}&language={{languageQuery}}&page={{num}}">{{num}}</a>{{/isCurrent}}
+                {{/pages}}
+                {{#hasNext}}<a href="/search/results?title={{titleQuery}}&author={{authorQuery}}&subject={{subjectQuery}}&language={{languageQuery}}&page={{nextPage}}">next</a>{{/hasNext}}
+            </div>
+        {{/tooManyResults}}
+
+    </main>
+
+    {{> footer}}
+
+</body>
+</html>

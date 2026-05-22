@@ -1,0 +1,2 @@
+Database (lưu ý thiết kế):
+-Bảng, khóa, index, tối ưu hóa dữ lieu của database như nào, unique, querry

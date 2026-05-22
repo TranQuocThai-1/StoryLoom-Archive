@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - StoryLoom Digital Archive</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* Ensures the Catalogs view matches the centered styling of your old layout */
+        .catalog-section { text-align: center; padding: 20px; box-sizing: border-box; }
+        .catalog-section h2 { margin-bottom: 25px; font-size: 1.8em; }
+        .catalog-section h3 { margin-top: 20px; font-size: 1.1em; }
+        
+        /* FIX: Added Flexbox with wrap and reduced font-size to perfectly contain the letters */
+        .az-links { 
+            margin-bottom: 30px; 
+            font-size: 1em; 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 12px; /* Replaces padding for cleaner wrapping */
+            line-height: 1.5;
+        }
+        .az-links a { text-decoration: none; color: #0056b3; }
+        .az-links a:hover { text-decoration: underline; color: #003d82; }
+        
+        /* Basic Tab Logic */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+
+        <div class="quick-actions">
+            <a href="/catalog/popular"><span class="icon">❤️</span> Most Popular</a>
+            <a href="/catalog/new"><span class="icon">📄</span> New Releases</a>
+            <a href="/catalog/random"><span class="icon">🎲</span> Random Suggestions</a>
+        </div>
+        
+        <div class="search-tabs">
+            <div class="search-tab active" data-tab="advanced-view">Advanced Search</div>
+            <div class="search-tab" data-tab="catalogs-view">Catalogs</div>
+        </div>
+
+        <div class="search-box">
+            
+            <!-- ADVANCED SEARCH TAB -->
+            <div id="advanced-view" class="tab-content active">
+                <button class="info-btn" id="open-help-btn" title="Search Help">i</button>
+
+                <h2>Advanced Search</h2>
+                <p class="search-instructions">You can use any one search option or multiple at the same time.<br>e.g. Author=Goethe and Language=English searches for works by Goethe in English.</p>
+
+                <form class="advanced-search-form" action="/search/results" method="GET">
+                    <div class="form-group">
+                        <label for="search-author">Author</label>
+                        <input type="text" id="search-author" name="author" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="search-title">Title</label>
+                        <input type="text" id="search-title" name="title" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="search-subject">Subject</label>
+                        <select id="search-subject" name="subject" class="form-control">
+                            <option value="">Any</option>
+                            <optgroup label="Literature & Fiction">
+                                <option value="Adventure">Adventure</option>
+                                <option value="American Literature">American Literature</option>
+                                <option value="Arthurian Legends">Arthurian Legends</option>
+                                <option value="Classics of Literature">Classics of Literature</option>
+                                <option value="Crime Fiction">Crime Fiction</option>
+                                <option value="Detective Fiction">Detective Fiction</option>
+                                <option value="Folklore">Folklore</option>
+                                <option value="Gothic Fiction">Gothic Fiction</option>
+                                <option value="Historical Fiction">Historical Fiction</option>
+                                <option value="Humour">Humour</option>
+                                <option value="Literature - Other">Literature - Other</option>
+                                <option value="Mythology">Mythology</option>
+                                <option value="Novels">Novels</option>
+                                <option value="Poetry">Poetry</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Russian Literature">Russian Literature</option>
+                                <option value="Science-Fiction & Fantasy">Science-Fiction & Fantasy</option>
+                                <option value="Short Stories">Short Stories</option>
+                            </optgroup>
+                            <optgroup label="Children & Young Adult">
+                                <option value="Children's Fiction">Children's Fiction</option>
+                                <option value="Children's Literature">Children's Literature</option>
+                                <option value="Children's Myths, Fairy Tales, etc.">Children's Myths, Fairy Tales, etc.</option>
+                                <option value="Children's Religion">Children's Religion</option>
+                            </optgroup>
+                            <optgroup label="Science & Technology">
+                                <option value="Astronomy">Astronomy</option>
+                                <option value="Botany">Botany</option>
+                                <option value="Ecology">Ecology</option>
+                                <option value="Geology">Geology</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Microbiology">Microbiology</option>
+                                <option value="Physiology">Physiology</option>
+                                <option value="Science - Biology">Science - Biology</option>
+                                <option value="Science - Chemistry/Biochemistry">Science - Chemistry/Biochemistry</option>
+                                <option value="Science - Earth/Agricultural/Farming">Science - Earth/Agricultural/Farming</option>
+                                <option value="Science - Physics">Science - Physics</option>
+                            </optgroup>
+                            <optgroup label="Social Sciences & Society">
+                                <option value="Economics">Economics</option>
+                                <option value="Law & Criminology">Law & Criminology</option>
+                            </optgroup>
+                            <optgroup label="History">
+                                <option value="Classical Antiquity">Classical Antiquity</option>
+                                <option value="History - American">History - American</option>
+                                <option value="History - British">History - British</option>
+                                <option value="History - Modern (1750+)">History - Modern (1750+)</option>
+                                <option value="History - Other">History - Other</option>
+                                <option value="History - Religious">History - Religious</option>
+                                <option value="History - Royalty">History - Royalty</option>
+                                <option value="History - Warfare">History - Warfare</option>
+                            </optgroup>
+                            <optgroup label="Religion & Philosophy">
+                                <option value="Buddhism">Buddhism</option>
+                                <option value="Christianity">Christianity</option>
+                                <option value="Hinduism">Hinduism</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Judaism">Judaism</option>
+                                <option value="Paganism">Paganism</option>
+                                <option value="Religion/Spirituality">Religion/Spirituality</option>
+                            </optgroup>
+                            <optgroup label="Education & Reference">
+                                <option value="Teaching & Education">Teaching & Education</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="search-language">Language</label>
+                        <select id="search-language" name="language" class="form-control">
+                            <option value="">Any</option>
+                            <option value="English">English</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-advanced-search">Search</button>
+                    </div>
+                </form>
+            </div>
+                
+            <!-- CATALOGS TAB -->
+            <div id="catalogs-view" class="tab-content catalog-section">
+                <h2>Catalogs</h2>
+                
+                <h3>Authors Catalog</h3>
+                <div class="az-links">
+                    <a href="/catalog/authors?letter=0-9">0-9</a> <a href="/catalog/authors?letter=A">A</a> <a href="/catalog/authors?letter=B">B</a> <a href="/catalog/authors?letter=C">C</a> <a href="/catalog/authors?letter=D">D</a> <a href="/catalog/authors?letter=E">E</a> <a href="/catalog/authors?letter=F">F</a> <a href="/catalog/authors?letter=G">G</a> <a href="/catalog/authors?letter=H">H</a> <a href="/catalog/authors?letter=I">I</a> <a href="/catalog/authors?letter=J">J</a> <a href="/catalog/authors?letter=K">K</a> <a href="/catalog/authors?letter=L">L</a> <a href="/catalog/authors?letter=M">M</a> <a href="/catalog/authors?letter=N">N</a> <a href="/catalog/authors?letter=O">O</a> <a href="/catalog/authors?letter=P">P</a> <a href="/catalog/authors?letter=Q">Q</a> <a href="/catalog/authors?letter=R">R</a> <a href="/catalog/authors?letter=S">S</a> <a href="/catalog/authors?letter=T">T</a> <a href="/catalog/authors?letter=U">U</a> <a href="/catalog/authors?letter=V">V</a> <a href="/catalog/authors?letter=W">W</a> <a href="/catalog/authors?letter=X">X</a> <a href="/catalog/authors?letter=Y">Y</a> <a href="/catalog/authors?letter=Z">Z</a> <a href="/catalog/authors?letter=other">other</a>
+                </div>
+
+                <h3>Titles Catalog</h3>
+                <div class="az-links">
+                    <a href="/catalog/titles?letter=0-9">0-9</a> <a href="/catalog/titles?letter=A">A</a> <a href="/catalog/titles?letter=B">B</a> <a href="/catalog/titles?letter=C">C</a> <a href="/catalog/titles?letter=D">D</a> <a href="/catalog/titles?letter=E">E</a> <a href="/catalog/titles?letter=F">F</a> <a href="/catalog/titles?letter=G">G</a> <a href="/catalog/titles?letter=H">H</a> <a href="/catalog/titles?letter=I">I</a> <a href="/catalog/titles?letter=J">J</a> <a href="/catalog/titles?letter=K">K</a> <a href="/catalog/titles?letter=L">L</a> <a href="/catalog/titles?letter=M">M</a> <a href="/catalog/titles?letter=N">N</a> <a href="/catalog/titles?letter=O">O</a> <a href="/catalog/titles?letter=P">P</a> <a href="/catalog/titles?letter=Q">Q</a> <a href="/catalog/titles?letter=R">R</a> <a href="/catalog/titles?letter=S">S</a> <a href="/catalog/titles?letter=T">T</a> <a href="/catalog/titles?letter=U">U</a> <a href="/catalog/titles?letter=V">V</a> <a href="/catalog/titles?letter=W">W</a> <a href="/catalog/titles?letter=X">X</a> <a href="/catalog/titles?letter=Y">Y</a> <a href="/catalog/titles?letter=Z">Z</a> <a href="/catalog/titles?letter=other">other</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    {{> footer}}
+
+    <!-- JavaScript to handle the seamless tab switching -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabs = document.querySelectorAll('.search-tab');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    const targetId = tab.getAttribute('data-tab');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

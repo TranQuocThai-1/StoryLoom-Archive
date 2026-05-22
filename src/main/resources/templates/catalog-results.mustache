@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pageTitle }} - StoryLoom Digital Archive</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* Classic Gutenberg Catalog Table Styles */
+        .catalog-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5px;
+            margin-top: 20px;
+        }
+        
+        .catalog-pagination {
+            font-size: 0.9em;
+            color: #0056b3;
+        }
+        .catalog-pagination a {
+            color: #0056b3;
+            text-decoration: none;
+            padding: 0 4px;
+        }
+        .catalog-pagination a:hover {
+            text-decoration: underline;
+        }
+        .catalog-pagination .current-page {
+            color: #000;
+            font-weight: bold;
+            padding: 0 4px;
+        }
+
+        .gutenberg-catalog-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: serif; /* Gives it that classic academic feel */
+            font-size: 1.05em;
+            margin-bottom: 10px;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+        }
+        
+        .gutenberg-catalog-table th {
+            background-color: #f2eee6; /* Classic Gutenberg beige */
+            text-align: left;
+            padding: 8px 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .gutenberg-catalog-table td {
+            padding: 8px 10px;
+            vertical-align: top;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Zebra striping for readability on dense tables */
+        .gutenberg-catalog-table tbody tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+        
+        .gutenberg-catalog-table tbody tr:hover {
+            background-color: #f0f4f8;
+        }
+
+        .catalog-author-col {
+            width: 35%;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .catalog-title-col {
+            width: 50%;
+        }
+        
+        .catalog-title-col a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        
+        .catalog-title-col a:hover {
+            text-decoration: underline;
+        }
+
+        .catalog-lang-col {
+            width: 15%;
+            color: #555;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+        
+        <div class="breadcrumbs">
+            <a href="/">StoryLoom</a> &rsaquo;
+            <a href="/search">Catalogs</a> &rsaquo; 
+            <span>{{ pageHeading }}</span>
+        </div>
+
+        <div class="catalog-header-bar">
+            <div></div> 
+            
+            <div class="catalog-pagination">
+                {{#pages}}
+                    {{#isCurrent}}<span class="current-page">{{num}}</span>{{/isCurrent}}
+                    {{^isCurrent}}<a href="?letter={{letter}}&page={{num}}">{{num}}</a>{{/isCurrent}}
+                {{/pages}}
+                {{#hasNext}}<a href="?letter={{letter}}&page={{nextPage}}">next</a>{{/hasNext}}
+            </div>
+        </div>
+
+        <table class="gutenberg-catalog-table">
+            <thead>
+                <tr>
+                    <th class="catalog-author-col">Author</th>
+                    <th class="catalog-title-col">Title</th>
+                    <th class="catalog-lang-col">Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#books}}
+                <tr>
+                    <td class="catalog-author-col">{{ authorName }}</td>
+                    <td class="catalog-title-col">
+                        <a href="/book/{{ id }}">{{ title }}</a>
+                    </td>
+                    <td class="catalog-lang-col">{{ category }}</td>
+                </tr>
+                {{/books}}
+
+                {{^books}}
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 30px; font-style: italic; color: #666;">
+                        No records found in this section. Please add books via the Admin Dashboard.
+                    </td>
+                </tr>
+                {{/books}}
+            </tbody>
+        </table>
+
+        <div class="catalog-header-bar" style="margin-top: 5px; margin-bottom: 40px;">
+            <div></div>
+            <div class="catalog-pagination">
+                {{#pages}}
+                    {{#isCurrent}}<span class="current-page">{{num}}</span>{{/isCurrent}}
+                    {{^isCurrent}}<a href="?letter={{letter}}&page={{num}}">{{num}}</a>{{/isCurrent}}
+                {{/pages}}
+                {{#hasNext}}<a href="?letter={{letter}}&page={{nextPage}}">next</a>{{/hasNext}}
+            </div>
+        </div>
+
+    </main>
+
+    {{> footer}}
+
+</body>
+</html>

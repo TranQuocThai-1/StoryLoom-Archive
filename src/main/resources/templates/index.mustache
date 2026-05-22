@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoryLoom - Folklore & Mythology Digital Archive</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+        
+        <div class="hero-section">
+            <h1 class="hero-title">StoryLoom is a library of thousands of free folktales</h1>
+            <p class="hero-subtitle">Choose among free texts, download them or read them online. You will find global mythology here, with a focus on public domain texts.</p>
+        </div>
+
+        <section class="book-section">
+            <h2>Featured Additions <a href="/categories" class="find-more">find more</a></h2>
+            <div class="slider-wrapper">
+                <button class="slide-btn left-btn">❮</button>
+                <div class="book-slider" id="newest-releases-grid">
+                    
+                    {{#featuredBooks}}
+                    <a href="/book/{{id}}" style="text-decoration: none; color: inherit;">
+                        <div class="book-card">
+                            {{#coverImagePath}}
+                                <img src="http://127.0.0.1:9000/storyloom-archive/{{coverImagePath}}" alt="Cover" class="book-cover" style="object-fit: cover;">
+                            {{/coverImagePath}}
+                            {{^coverImagePath}}
+                                <div class="book-cover color-1" style="display: flex; align-items: center; justify-content: center; font-size: 11px; text-align: center; color: white;">No Cover</div>
+                            {{/coverImagePath}}
+                            <p class="book-title">{{title}}</p>
+                            <p class="book-author">{{authorName}}</p>
+                        </div>
+                    </a>
+                    {{/featuredBooks}}
+                    </div>
+                <button class="slide-btn right-btn">❯</button>
+            </div>
+        </section>
+
+        <section class="info-panels">
+            <div class="panel">
+                <h2>Find Free Tales</h2>
+                <p><a href="/frequently-downloaded">Frequently Downloaded</a>: Top 10, ranked by popularity.</p>
+                <p><a href="/categories">Categories</a>. Traditional bookstore classifications and thematic hand-curated lists.</p>
+                <p><a href="/search">Search Options</a>. By region, motif, popularity, and more.</p>
+            </div>
+            <div class="panel">
+                <h2>The Archive</h2>
+                <p>✓ <strong>100% Free</strong> - No fees, no registration, completely free</p>
+                <p>✓ <strong>No Apps Required</strong> - only regular Web browsers needed</p>
+                <p>✓ <strong>Volunteer-based</strong> - helping catalog stories for years</p>
+            </div>
+        </section>
+
+        <section class="book-section">
+            <h2>Most Popular <a href="/frequently-downloaded" class="find-more">find more</a></h2>
+            <div class="slider-wrapper">
+                <button class="slide-btn left-btn">❮</button>
+                <div class="book-slider" id="popular-releases-grid">
+                    
+                    {{#popularBooks}}
+                    <a href="/book/{{id}}" style="text-decoration: none; color: inherit;">
+                        <div class="book-card">
+                            {{#coverImagePath}}
+                                <img src="http://127.0.0.1:9000/storyloom-archive/{{coverImagePath}}" alt="Cover" class="book-cover" style="object-fit: cover;">
+                            {{/coverImagePath}}
+                            {{^coverImagePath}}
+                                <div class="book-cover color-3" style="display: flex; align-items: center; justify-content: center; font-size: 11px; text-align: center; color: white;">No Cover</div>
+                            {{/coverImagePath}}
+                            <p class="book-title">{{title}}</p>
+                            <p class="book-author">{{authorName}}</p>
+                        </div>
+                    </a>
+                    {{/popularBooks}}
+                    
+                </div>
+                <button class="slide-btn right-btn">❯</button>
+            </div>
+        </section>
+
+        <section class="category-grid" id="categories">
+            <a href="/categories" class="category-btn"><span class="icon">🏛️</span> History</a>
+            <a href="/categories" class="category-btn"><span class="icon">📜</span> Literature</a>
+            <a href="/categories" class="category-btn"><span class="icon">🔭</span> Science & Technology</a>
+            <a href="/categories" class="category-btn"><span class="icon">👫</span> Social Sciences & Society</a>
+            <a href="/categories" class="category-btn"><span class="icon">🎨</span> Arts & Culture</a>
+            <a href="/categories" class="category-btn"><span class="icon">☯️</span> Religion & Philosophy</a>
+            <a href="/categories" class="category-btn"><span class="icon">🎯</span> Lifestyle & Hobbies</a>
+            <a href="/categories" class="category-btn"><span class="icon">🌿</span> Health & Medicine</a>
+            <a href="/categories" class="category-btn" style="grid-column: 1 / -1; justify-self: center; width: 250px; justify-content: center;"><span class="icon">🎓</span> Education & Reference</a>
+        </section>
+
+        <section class="info-panels bottom-panels">
+            <div class="panel">
+                <h2>Get Help</h2>
+                <p><a href="#read-opt">Reading Options</a>: How to read and enjoy our texts.</p>
+                <p><a href="/faq">Frequently Asked Questions</a> about the archive.</p>
+                <p><a href="/faq">Help, How-To and FAQs</a>: In depth information about many topics.</p>
+
+                <h2 class="sub-heading">How to Help</h2>
+                <p><a href="#volunteer">Volunteer</a> to help digitize and proofread texts.</p>
+                <p><a href="#report">Report errors</a>, bugs, typos, and suggest changes.</p>
+            </div>
+
+            <div class="panel">
+                <h2>Special Areas</h2>
+                <p><a href="/about">About the Archive</a>.</p>
+                <p><a href="#feeds">Feeds</a> of new additions.</p>
+                <p><a href="#linking">Linking to the Archive</a> and crawling the site.</p>
+                <p><a href="/permissions">Permissions, copyright, and licensing</a>.</p>
+            </div>
+
+            <div class="panel">
+                <h2>Our Social Media</h2>
+                <div class="social-icons">
+                    <a href="https://facebook.com" target="_blank" class="icon-link fb-icon" title="Facebook">f</a>
+                    <a href="https://instagram.com" target="_blank" class="icon-link ig-icon" title="Instagram">📷</a>
+                    <a href="https://x.com" target="_blank" class="icon-link x-icon" title="X (Twitter)">𝕏</a>
+                </div>
+
+                <h2 class="sub-heading">News Feeds of new eBooks</h2>
+                <div class="social-icons">
+                    <a href="https://facebook.com" target="_blank" class="icon-link fb-icon" title="Facebook News">f</a>
+                    <a href="https://instagram.com" target="_blank" class="icon-link ig-icon" title="Instagram News">📷</a>
+                    <a href="https://x.com" target="_blank" class="icon-link x-icon" title="X News">𝕏</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    {{> footer}}
+
+</body>
+</html>

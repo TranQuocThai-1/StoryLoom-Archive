@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Lore Shelves - StoryLoom</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* Goodreads Inspired Layout */
+        .shelves-layout {
+            display: flex;
+            max-width: 1100px;
+            margin: 30px auto;
+            gap: 30px;
+            font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        /* Left Sidebar Styling */
+        .sidebar {
+            width: 25%;
+            border-right: 1px solid #ddd;
+            padding-right: 20px;
+        }
+        .sidebar h3 { font-size: 1.1em; border-bottom: 1px solid #ebebeb; padding-bottom: 5px; margin-bottom: 10px; }
+        .shelf-list { list-style-type: none; padding: 0; margin: 0; }
+        .shelf-list li { margin-bottom: 8px; font-size: 0.95em; }
+        .shelf-list a { color: #00635d; text-decoration: none; }
+        .shelf-list a:hover { text-decoration: underline; }
+        
+        .create-shelf-form { margin-top: 20px; border-top: 1px solid #ebebeb; padding-top: 15px; }
+        .create-shelf-form input[type="text"] { width: 100%; padding: 5px; margin-bottom: 5px; border: 1px solid #ccc; }
+        .create-shelf-form button { background-color: #f4f1ea; border: 1px solid #d6d0c4; padding: 5px 10px; cursor: pointer; color: #333; }
+        .create-shelf-form button:hover { background-color: #e9e5db; }
+
+        /* Right Main Content (Data Table) */
+        .main-content {
+            width: 75%;
+        }
+        .main-content h2 { border-bottom: 2px solid #e8e8e8; padding-bottom: 10px; margin-top: 0; }
+        
+        .goodreads-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .goodreads-table th { border-bottom: 2px solid #ebebeb; text-align: left; padding: 10px 5px; color: #382110; font-size: 0.85em; text-transform: uppercase; }
+        .goodreads-table td { border-bottom: 1px solid #ebebeb; padding: 15px 5px; vertical-align: top; }
+        
+        .cover-img { width: 50px; border: 1px solid #ccc; box-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+        .book-title { font-weight: bold; color: #333; text-decoration: none; font-size: 1.1em; }
+        .book-title:hover { text-decoration: underline; color: #00635d; }
+        .book-author { color: #181818; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <div class="shelves-layout">
+        
+        <aside class="sidebar">
+            <h3>My Shelves</h3>
+            <ul class="shelf-list">
+                {{#shelves}}
+                    <li><a href="/shelves?activeId={{id}}">{{name}}</a></li>
+                {{/shelves}}
+                {{^shelves}}
+                    <li style="color: #666; font-style: italic;">No shelves created yet.</li>
+                {{/shelves}}
+            </ul>
+
+            <div class="create-shelf-form">
+                <form action="/shelves/create" method="POST">
+                    <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
+                    <input type="text" name="shelfName" placeholder="Add a shelf..." required>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            {{#activeShelf}}
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e8e8e8; padding-bottom: 10px; margin-top: 0; margin-bottom: 20px;">
+                    <h2 style="margin: 0; border: none;">Shelf: {{activeShelf.name}}</h2>
+                    
+                    <form action="/shelves" method="GET" style="display: flex;">
+                        <input type="hidden" name="activeId" value="{{activeShelf.id}}">
+                       <input type="text" name="searchQuery" placeholder="Search to add a book..." value="{{#searchQuery}}{{searchQuery}}{{/searchQuery}}" style="padding: 5px; border: 1px solid #ccc; width: 250px;">
+                        <button type="submit" style="background-color: #f4f1ea; border: 1px solid #d6d0c4; padding: 5px 10px; cursor: pointer;">Find</button>
+                    </form>
+                </div>
+
+                {{#searchResults}}
+                <div style="background-color: #f9f9f9; border: 1px solid #e0e0e0; padding: 15px; margin-bottom: 25px;">
+                    <h4 style="margin-top: 0;">Search Results for "{{searchQuery}}"</h4>
+                    <ul style="list-style-type: none; padding: 0; margin: 0;">
+                        {{#searchResults}}
+                            <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0;">
+                                <span><strong>{{title}}</strong> by {{authorName}}</span>
+                                
+                                <form action="/shelves/addBook" method="POST" style="margin: 0;">
+                                    <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
+                                    <input type="hidden" name="shelfId" value="{{activeShelf.id}}"/>
+                                    <input type="hidden" name="bookId" value="{{id}}"/>
+                                    <button type="submit" style="background-color: #00635d; color: white; border: none; padding: 4px 8px; cursor: pointer; font-size: 0.85em; border-radius: 3px;">+ Add to Shelf</button>
+                                </form>
+                            </li>
+                        {{/searchResults}}
+                    </ul>
+                </div>
+                {{/searchResults}}
+
+                {{#activeBooks.0}} 
+                <table class="goodreads-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">Cover</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#activeBooks}}
+                        <tr>
+                            <td>
+                                {{#coverImagePath}}
+                                    <img src="http://127.0.0.1:9000/storyloom-archive/{{coverImagePath}}" class="cover-img" alt="Cover">
+                                {{/coverImagePath}}
+                                {{^coverImagePath}}
+                                    <div style="width: 50px; height: 75px; background: #eee; border: 1px solid #ccc; text-align: center; font-size: 10px; color: #999; display: flex; align-items: center; justify-content: center;">No Cover</div>
+                                {{/coverImagePath}}
+                            </td>
+                            <td>
+                                <a href="/book/{{id}}" class="book-title">{{title}}</a>
+                            </td>
+                            <td class="book-author">{{authorName}}</td>
+                            <td style="color: #666; font-size: 0.9em;">
+                                {{#category}}{{category}}{{/category}}{{^category}}Uncategorized{{/category}}
+                            </td>
+                        </tr>
+                        {{/activeBooks}}
+                    </tbody>
+                </table>
+                {{/activeBooks.0}}
+                
+                {{^activeBooks.0}}
+                    <p style="color: #666; margin-top: 20px;">This shelf is currently empty. Use the search bar above to find some lore to add!</p>
+                {{/activeBooks.0}}
+
+            {{/activeShelf}}
+
+            {{^activeShelf}}
+                <h2>Welcome to your Shelves</h2>
+                <p style="color: #666;">Create a new shelf on the left to start organizing your research!</p>
+            {{/activeShelf}}
+        </main>
+
+    </div>
+
+</body>
+</html>

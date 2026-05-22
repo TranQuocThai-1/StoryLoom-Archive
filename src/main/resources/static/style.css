@@ -1,0 +1,1472 @@
+/* =========================================
+   1. Base Reset & Typography
+   ========================================= */
+html {
+    scroll-padding-top: 120px; 
+    scroll-behavior: smooth;   
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+    color: #333333;
+    line-height: 1.6;
+}
+
+a {
+    color: #005599;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a.visited-temp {
+    color: #808080 !important; 
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* =========================================
+/* =========================================
+   2. Header & Navigation
+   ========================================= */
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background-color: #fff;
+}
+
+.site-header {
+    background-color: #92bce3;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    position: relative;
+}
+
+a.logo {
+    font-family: "Georgia", serif;
+    font-size: 26px;
+    font-weight: bold;
+    color: #a06000 !important;
+    text-decoration: none !important;
+    flex: 1; /* Balances with the header-auth */
+    transition: opacity 0.2s ease;
+}
+
+a.logo:hover {
+    opacity: 0.8;
+}
+
+/* Dead-Center Search Bar */
+.search-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.search-container input {
+    padding: 10px 15px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-right: none;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    background-color: #4a779b;
+    color: white;
+    border: 1px solid #4a779b;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.search-container button:hover {
+    background-color: #365b77;
+}
+
+/* Authentication Buttons (Right Aligned) */
+.header-auth {
+    flex: 1; /* Balances with the logo */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px; 
+}
+
+.auth-login {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.95em;
+}
+
+.auth-login:hover {
+    text-decoration: underline;
+}
+
+.auth-signup {
+    background-color: #0275d8;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95em;
+    border: 1px solid #025aa5;
+}
+
+.auth-signup:hover {
+    background-color: #025aa5;
+}
+
+/* Sub-Navigation */
+.sub-nav {
+    background-color: #f2f2f2;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+}
+
+.sub-nav a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.sub-nav a:hover {
+    text-decoration: underline;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    z-index: 100;
+    top: 100%; 
+    left: 0;
+    border: 1px solid #ddd;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    display: block;
+    font-weight: normal;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* =========================================
+   3. Homepage Components
+   ========================================= */
+.hero-section {
+    text-align: left;
+    max-width: 900px;
+    margin: 0 0 30px 0;
+}
+
+.hero-title {
+    color: #a06000;
+    font-size: clamp(20px, 3vw, 28px);
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-size: clamp(14px, 2vw, 16px);
+}
+
+.book-section {
+    background-color: #f4f8fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.book-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.find-more {
+    font-size: 13px;
+    background-color: #c4d7e0;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    font-weight: normal;
+}
+
+.slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.book-slider::-webkit-scrollbar {
+    display: none; 
+}
+
+.book-slider {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 15px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffffff;
+    color: #4a779b;
+    border: 1px solid #dbe8ed;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide-btn:hover {
+    background-color: #4a779b;
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 119, 155, 0.4);
+}
+
+.left-btn { left: -15px; }
+.right-btn { right: -15px; }
+
+.book-card {
+    flex: 0 0 auto;
+    width: 140px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.book-cover {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+.color-1 { background-color: #8da47e; }
+.color-2 { background-color: #e0cc73; }
+.color-3 { background-color: #7992a6; }
+.color-4 { background-color: #a67979; }
+.color-5 { background-color: #3b424d; }
+
+.book-title {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.book-author {
+    font-size: 11px;
+    color: #666;
+}
+
+.info-panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.panel {
+    background-color: #f7f7f7;
+    padding: 25px;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #eee;
+}
+
+.panel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.panel h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.panel p {
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+    margin-bottom: 50px;
+}
+
+.category-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    border: 1px solid #dbe8ed;
+    border-radius: 8px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none !important;
+    color: #005599 !important;
+    font-weight: bold;
+    font-size: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.category-btn .icon {
+    font-size: 20px;
+}
+
+.category-btn:hover {
+    background-color: #005599;
+    color: #ffffff !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,85,153,0.3);
+}
+
+h2.sub-heading {
+    margin-top: 25px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.icon-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none !important;
+    color: #005599 !important;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icon-link:hover {
+    transform: translateY(-4px) scale(1.1);
+    color: #003366 !important;
+}
+
+.fb-icon {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.ig-icon {
+    font-size: 32px;
+}
+
+.x-icon {
+    font-family: Arial, sans-serif;
+    font-size: 32px;
+}
+
+/* =========================================
+   4. Text Pages (About, Privacy, FAQ)
+   ========================================= */
+.text-content {
+    width: 100%;
+    margin: 40px 0;
+    padding: 30px 0;
+    background-color: #ffffff;
+}
+
+.text-content h1 {
+    font-size: 28px; 
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    color: #333;
+}
+
+.text-content h2 {
+    font-size: 20px;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.text-content h3 {
+    font-size: 17px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.text-content p {
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.text-content a {
+    color: #005599;
+    text-decoration: underline;
+}
+
+.text-content a:hover {
+    color: #003366;
+}
+
+.dashed-list {
+    list-style-type: none;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.dashed-list li {
+    position: relative;
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.dashed-list li::before {
+    content: "-";
+    position: absolute;
+    left: -15px;
+}
+
+.contact-block {
+    margin-left: 20px;
+    margin-bottom: 25px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-left: 4px solid #92bce3;
+}
+
+.toc-box {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px; 
+    margin-bottom: 40px;
+    border-radius: 8px;
+    max-width: 600px;
+}
+
+.toc-box h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px; 
+    color: #333;
+}
+
+/* =========================================
+   5. Categories Directory & Stats Pages
+   ========================================= */
+.category-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.category-group h2 {
+    font-size: 18px;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.category-group .dashed-list {
+    margin-bottom: 30px; 
+}
+
+.stats-content h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.stats-content h2 {
+    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.stats-quick-links {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    max-width: 350px; 
+}
+
+.stats-quick-links p {
+    margin-bottom: 5px;
+    font-size: 13px; 
+}
+
+.top-100-list {
+    margin-left: 40px; 
+    margin-bottom: 15px;
+}
+
+.top-100-list li {
+    font-size: 13px; 
+    margin-bottom: 4px;
+    padding-left: 5px;
+}
+
+/* =========================================
+   6. Search Page UI (Tabs, Forms, Modals)
+   ========================================= */
+.quick-actions {
+    text-align: center;
+    margin: 20px auto 30px;
+}
+
+.quick-actions a {
+    color: #a81c1c; 
+    text-decoration: underline;
+    font-weight: bold;
+    margin: 0 15px;
+    font-size: 16px;
+}
+
+.quick-actions a:hover {
+    color: #d12222;
+}
+
+.quick-actions .icon {
+    text-decoration: none; 
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Tab Navigation */
+.search-tabs {
+    display: flex;
+    justify-content: center; 
+    max-width: 650px; 
+    margin: 0 auto;
+}
+
+.search-tab {
+    padding: 12px 25px;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    background-color: #e2e8ea; 
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0; 
+    margin: 0 5px; 
+    transition: background-color 0.2s ease;
+}
+
+.search-tab a {
+    color: #333;
+    text-decoration: none !important; 
+}
+
+.search-tab:hover {
+    background-color: #d1dce0; 
+}
+
+.search-tab.active {
+    background-color: #f2f2f2; 
+    border: 1px solid #ddd;
+    border-bottom: 2px solid #f2f2f2; 
+    border-top: 3px solid #4a779b; 
+    font-weight: bold;
+    position: relative;
+    top: 1px; 
+    z-index: 10; 
+}
+
+/* Main Box */
+.search-box {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 12px; 
+    max-width: 650px; 
+    margin: 0 auto 60px; 
+    padding: 35px 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    position: relative;
+    z-index: 1; 
+}
+
+.search-box h2 {
+    text-align: center;
+    font-size: 22px;
+    color: #000;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.search-instructions {
+    text-align: center;
+    font-size: 13px;
+    color: #000;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Forms */
+.advanced-search-form {
+    max-width: 480px; 
+    margin: 0 auto;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 100px; 
+    text-align: right;
+    margin-right: 15px;
+    font-size: 14px;
+    color: #000;
+}
+
+.form-control {
+    width: 300px; 
+    flex: none;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.form-control:focus {
+    border-color: #4a779b;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.btn-advanced-search {
+    background-color: #5b9dbf; 
+    color: white;
+    border: 1px solid #4a8caf;
+    padding: 7px 25px;
+    border-radius: 3px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-advanced-search:hover {
+    background-color: #4a8caf;
+}
+
+/* Tab Content Visibility Rule */
+.tab-content {
+    display: none; 
+}
+
+.tab-content.active {
+    display: block; 
+}
+
+/* =========================================
+   6a. UPDATED Catalogs Sizing and Layout
+   ========================================= */
+.catalog-section {
+    text-align: center;
+    padding-bottom: 50px;
+}
+
+/* Main title enlarged to match Advanced Search (22px) */
+.catalog-section h2 {
+    font-size: 22px; 
+    margin-bottom: 30px;
+}
+
+.catalog-section h3 {
+    font-size: 16px; 
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #000;
+}
+
+/* A-Z links grouped tighter so 'other' fits on the row */
+.az-links {
+    font-size: 13px; 
+    margin-bottom: 20px;
+    white-space: nowrap; /* Tries to keep them on one line */
+}
+
+.az-links a {
+    margin: 0 2px; /* Margin shrunk down to 2px */
+    color: #005599;
+    text-decoration: underline;
+}
+
+.az-links a:hover, .nontext-links a:hover {
+    color: #003366;
+}
+
+/* Restored simple inline layout for the non-text pipes */
+.nontext-links {
+    font-size: 13px; 
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.nontext-links a {
+    color: #005599;
+    text-decoration: underline;
+}
+
+/* =========================================
+   7. Modals
+   ========================================= */
+.info-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 1px solid #999;
+    color: #555;
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+.info-btn:hover {
+    background-color: #4a779b;
+    color: #ffffff;
+    border-color: #4a779b;
+}
+
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 2000; 
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay .modal-content {
+    position: relative;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh; 
+    overflow-y: auto; 
+    margin: 0; 
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #666;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: #a81c1c;
+}
+
+/* =========================================
+   8. Footer
+   ========================================= */
+.site-footer {
+    background-color: #f4f4f4;
+    padding: 30px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+}
+/* =========================================
+   8. Dynamic Book Template Layout
+   ========================================= */
+
+.breadcrumbs {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.breadcrumbs a {
+    color: #666;
+    text-decoration: underline;
+}
+
+.book-header-title {
+    font-size: 26px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.title-divider {
+    border: 0;
+    border-bottom: 1px solid #000;
+    margin-bottom: 25px;
+}
+
+/* Two-column layout */
+.book-details-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* --- Left Column: Cover & Socials --- */
+.book-cover-img {
+    width: 100%;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+.social-share {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.social-share a {
+    text-decoration: none;
+    font-size: 20px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.social-share a:hover {
+    opacity: 1;
+}
+/* --- Right Column: Content & Tables --- */
+.synopsis-box {
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.section-title {
+    font-size: 18px;
+    color: #000;
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.table-subtitle {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* Common Table Styling */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.data-table th, .data-table td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    width: 25%; /* Keeps the left column of the metadata table neat */
+}
+
+/* Alternating Row Colors */
+.data-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.data-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Download Table Specifics */
+.download-table th {
+    background-color: #e2e8ea; 
+}
+
+/* Forces the Options column to take up 85% of the table width */
+.download-table th.col-reading-options {
+    width: 85%;
+}
+
+/* Keeps the Size column tucked neatly to the right */
+.download-table th.col-size {
+    width: 15%;
+}
+
+/* We removed the .icon-col classes since those columns are gone */
+
+.icon-col {
+    width: 40px;
+    text-align: center !important;
+}
+
+.file-icon {
+    margin-right: 5px;
+}
+
+.table-footnote {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.table-footnote.italic {
+    font-style: italic;
+}
+
+/* Similar Books List */
+.similar-books-list {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.similar-books-list li {
+    margin-bottom: 8px;
+}
+
+.similar-books-list .icon {
+    margin-right: 8px;
+}
+
+/* Base state for the links */
+.similar-books-list a {
+    color: #a81c1c;
+    text-decoration: underline;
+    text-underline-offset: 3px; /* Pushes the underline down slightly so it looks cleaner */
+    display: inline-block; /* CRITICAL: Allows the text to actually move and scale smoothly */
+    
+    /* This cubic-bezier creates a highly fluid, buttery animation curve */
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                color 0.3s ease, 
+                text-shadow 0.4s ease,
+                text-decoration-color 0.3s ease;
+}
+
+/* The Hover "Pop Out" State */
+.similar-books-list a:hover {
+    color: #7c1111; 
+    text-decoration-color: transparent; /* Fades the underline out cleanly instead of snapping it off */
+    
+    /* Moves it right 10px and scales it up 2% to create the 3D lift */
+    transform: translateX(10px) scale(1.02); 
+    
+    /* A soft, realistic shadow to complete the pop-out effect */
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15); 
+}
+
+.info-bubble {
+    font-size: 12px;
+    text-decoration: none !important;
+}
+
+/* =========================================
+   9. Backend Admin Dashboard
+   ========================================= */
+
+.admin-body {
+    background-color: #f4f7f6; /* A slightly cooler, sterile grey for the backend */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Header */
+.admin-header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.admin-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-logo {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Georgia", serif;
+}
+
+.admin-logo span {
+    color: #92bce3;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.admin-user {
+    font-size: 13px;
+}
+
+.admin-user a {
+    color: #92bce3;
+}
+
+/* Layout */
+.admin-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 30px auto;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+}
+
+.admin-menu {
+    list-style: none;
+    padding: 0;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e0e4e8;
+    overflow: hidden;
+}
+
+.admin-menu li {
+    border-bottom: 1px solid #e0e4e8;
+}
+
+.admin-menu li:last-child {
+    border-bottom: none;
+}
+
+.admin-menu a {
+    display: block;
+    padding: 12px 20px;
+    color: #444;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.admin-menu a:hover {
+    background-color: #f8fbfc;
+}
+
+.admin-menu a.active {
+    background-color: #eef2f5;
+    border-left: 4px solid #4a779b;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Main Content Area */
+.admin-main {
+    flex-grow: 1;
+    background: white;
+    padding: 30px;
+    border-radius: 6px;
+    border: 1px solid #e0e4e8;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.admin-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e0e4e8;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.admin-header-row h1 {
+    font-size: 22px;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.view-live-btn {
+    font-size: 13px;
+    color: #666;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.view-live-btn:hover {
+    background-color: #f4f4f4;
+}
+
+/* Form Styling */
+.form-section {
+    margin-bottom: 35px;
+}
+
+.form-section h2 {
+    font-size: 16px;
+    color: #4a779b;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.admin-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.admin-form-group label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.admin-form-group input[type="text"],
+.admin-form-group input[type="number"],
+.admin-form-group select,
+.admin-form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccd1d9;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.admin-form-group input:focus,
+.admin-form-group select:focus,
+.admin-form-group textarea:focus {
+    border-color: #4a779b;
+    box-shadow: 0 0 0 2px rgba(74, 119, 155, 0.1);
+}
+
+.upload-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.upload-group {
+    background-color: #f8fbfc;
+    padding: 15px;
+    border: 1px dashed #ccd1d9;
+    border-radius: 4px;
+}
+
+.upload-group input[type="file"] {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* Buttons */
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e4e8;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 10px 25px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+}
+
+.btn-primary {
+    background-color: #2ecc71; /* A clear "success/go" green */
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #e0e4e8;
+    color: #555;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    opacity: 0.9;
+}
+/* =========================================
+   TEMPORARY DEV TOOLS (Delete before launch)
+   ========================================= */
+.dev-access-panel {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #2c3e50;
+    color: #ffffff !important;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999; /* Ensures it stays on top of absolutely everything */
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.dev-access-panel:hover {
+    background-color: #a81c1c; /* Turns red on hover so you know it's active */
+    transform: translateY(-3px);
+}
+/* =========================================
+   10. Category & Results Catalog Layout
+   ========================================= */
+
+.category-page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+/* Multi-column flow layout */
+.catalog-columns {
+    column-count: 5;
+    column-gap: 30px;
+    column-rule: 1px solid #e0e4e8; 
+    width: 100%;
+}
+
+/* Prevent items from breaking awkwardly across columns */
+.catalog-control-block,
+.catalog-book-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    display: inline-block; 
+    width: 100%;
+}
+
+/* --- Control Blocks (Sort & Pagination) --- */
+.catalog-control-block.top-controls {
+    margin-bottom: 25px; /* Adds space before the first book */
+}
+
+.catalog-control-block.bottom-controls {
+    margin-top: 20px; /* Pushes the bottom box away from the last book */
+}
+
+.catalog-sort {
+    margin-bottom: 10px;
+}
+
+.catalog-sort label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #000;
+}
+
+.catalog-sort select {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    font-style: italic;
+    color: #333;
+    font-size: 13px;
+}
+
+/* The beige background box matching the image */
+.catalog-pagination {
+    background-color: #f0ebd8; 
+    padding: 10px;
+    font-size: 12px;
+    color: #333;
+}
+
+.catalog-pagination a {
+    color: #005599;
+    text-decoration: underline;
+}
+
+/* --- Book Entries --- */
+.catalog-book-item {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.catalog-book-cover {
+    width: 85px; /* Enlarged from 60px */
+    height: auto;
+    border: 1px solid #ddd;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.catalog-book-cover-placeholder {
+    width: 85px; /* Enlarged from 60px */
+    flex-shrink: 0;
+}
+
+.catalog-book-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.catalog-book-title {
+    color: #a81c1c !important; 
+    text-decoration: underline !important;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.catalog-book-author {
+    color: #000;
+    font-size: 12px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.catalog-book-downloads {
+    color: #666;
+    font-size: 11px;
+}
+

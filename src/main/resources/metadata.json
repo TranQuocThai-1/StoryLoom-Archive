@@ -1,0 +1,52 @@
+[
+    {
+        "title": "Beowulf: An Anglo-Saxon Epic Poem",
+        "authorName": "Unknown Author",
+        "category": "Mythology",
+        "language": "English",
+        "synopsis": "A public domain work exploring themes of mythology.",
+        "coverImagePath": "8e6fc7ad-6e1e-40a8-9dd4-c44c564a9424.jpg",
+        "epubFilePath": "100135bd-e4cd-4737-8ae2-23f00661de6a.epub",
+        "textFilePath": "5f0ccc5b-c920-46d0-9e92-b3eee5f64fec.txt"
+    },
+    {
+        "title": "\u8b66\u4e16\u901a\u8a00",
+        "authorName": "Feng, Menglong",
+        "category": "Mythology",
+        "language": "English",
+        "synopsis": "A public domain work exploring themes of mythology.",
+        "coverImagePath": "1720a6ac-84b9-4f66-b87a-f2be6f0ee530.jpg",
+        "epubFilePath": "69e64e07-a2ca-4a8c-be40-5d309cef6f6c.epub",
+        "textFilePath": "ec7c4090-1cc3-40ca-8743-5f818ef81f3a.txt"
+    },
+    {
+        "title": "Grimms' Fairy Tales",
+        "authorName": "Grimm, Jacob",
+        "category": "Mythology",
+        "language": "English",
+        "synopsis": "A public domain work exploring themes of mythology.",
+        "coverImagePath": "9703f9b0-85ce-4051-a2a4-c9d506232fba.jpg",
+        "epubFilePath": "0b5c5ff8-c29a-479e-9fd4-ad67b4874b59.epub",
+        "textFilePath": null
+    },
+    {
+        "title": "The Odyssey: Rendered into English prose for the use of those who cannot read the original",
+        "authorName": "Homer",
+        "category": "Mythology",
+        "language": "English",
+        "synopsis": "A public domain work exploring themes of mythology.",
+        "coverImagePath": "659da70f-aff7-40b9-a232-5817876ab93f.jpg",
+        "epubFilePath": "96478201-c123-4c80-b0b1-e77812865535.epub",
+        "textFilePath": "fc29a782-0d6b-4293-b199-c6da8c4b1189.txt"
+    },
+    {
+        "title": "Oedipus King of Thebes: Translated into English Rhyming Verse with Explanatory Notes",
+        "authorName": "Sophocles",
+        "category": "Mythology",
+        "language": "English",
+        "synopsis": "A public domain work exploring themes of mythology.",
+        "coverImagePath": "39f05ffd-d661-4ab4-8f86-555c02228720.jpg",
+        "epubFilePath": "38200112-3e57-4e1f-b228-59f1d9da7d28.epub",
+        "textFilePath": "0f2abe5a-243f-4637-8826-baf255dc2d5a.txt"
+    }
+]

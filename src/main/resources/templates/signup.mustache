@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - StoryLoom</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { background-color: #f7f9fc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+        
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .auth-card {
+            display: flex;
+            width: 100%;
+            max-width: 950px;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 600px;
+        }
+
+        .auth-left {
+            flex: 1;
+            background-color: #eaf2f8; 
+            padding: 80px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .auth-left h1 {
+            font-size: 2.5em;
+            color: #111;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .auth-left p {
+            font-size: 1.3em;
+            color: #555;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .auth-right {
+            flex: 1.1;
+            padding: 50px 60px;
+            background-color: #fff;
+        }
+
+        .btn-google {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            box-sizing: border-box;
+        }
+        .btn-google:hover { background: #f9f9f9; }
+        
+        .divider {
+            text-align: center;
+            border-top: 1px solid #ccc;
+            line-height: 0.1em;
+            margin: 25px 0 30px 0;
+            color: #777;
+        }
+        .divider span {
+            background: #fff;
+            padding: 0 10px;
+            font-size: 0.9em;
+        }
+
+        .auth-form-group { 
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px; 
+        }
+        
+        .auth-form-group label {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 1.1em;
+            color: #222;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #92bce3;
+            box-shadow: 0 0 5px rgba(146, 188, 227, 0.5);
+        }
+
+        .form-hint {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background-color: #0275d8; 
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1.05em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-primary:hover { background-color: #025aa5; }
+
+        .auth-footer {
+            text-align: center;
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 15px;
+        }
+        .auth-footer a { color: #0056b3; text-decoration: none; }
+        .auth-footer a:hover { text-decoration: underline; }
+        .auth-login-link { text-align: center; margin-top: 25px; font-size: 0.95em; }
+        .auth-login-link a { color: #0056b3; text-decoration: underline; }
+        .auth-login-link a:hover { color: #003d82; }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            
+            <div class="auth-left">
+                <h1>Sign Up</h1>
+                <p>Get your free StoryLoom account and borrow digital books from our community archive</p>
+            </div>
+
+            <div class="auth-right">
+                <a href="#" class="btn-google">
+                    <span style="color: #4285F4; margin-right: 8px; font-size: 1.2em; font-family: sans-serif;">G</span> Sign up with Google
+                </a>
+
+                <div class="divider"><span>OR</span></div>
+
+                {{#errorMessage}}
+                <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 3px; margin-bottom: 20px; text-align: center; font-weight: bold; font-size: 0.9em; border: 1px solid #f5c6cb;">
+                    {{errorMessage}}
+                </div>
+                {{/errorMessage}}
+
+                <form action="/register" method="POST">
+                    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+                    
+                    <div class="auth-form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label for="screenName">Screen Name</label>
+                        <p class="form-hint" style="margin-top: -3px; margin-bottom: 5px;">Public and cannot be changed later.</p>
+                        <input type="text" id="screenName" name="screenName" class="form-control" required>
+                        <p class="form-hint">Your URL: https://storyloom.org/people/screenname</p>
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Sign Up with Email</button>
+                    
+                    <div class="auth-footer">
+                        By signing up, you agree to the Archive's <br><a href="#">Terms of Service</a>.
+                    </div>
+
+                    <div class="auth-login-link">
+                        Already have an account? <a href="/login">Log in</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    {{> footer}}
+
+</body>
+</html>

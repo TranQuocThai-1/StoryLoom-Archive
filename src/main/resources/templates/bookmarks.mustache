@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bookmarks - StoryLoom</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* AO3 Inspired Blurb Styling */
+        .dashboard-container { max-width: 900px; margin: 40px auto; padding: 20px; }
+        
+        .bookmark-blurb {
+            border: 1px solid #ddd;
+            margin-bottom: 25px;
+            background-color: #fff;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .blurb-header {
+            background-color: #990000; /* Classic AO3 Red */
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .blurb-header a { color: white; font-weight: bold; font-size: 1.2em; text-decoration: none; }
+        .blurb-header a:hover { text-decoration: underline; }
+        .author-text { color: #f0f0f0; font-size: 0.9em; }
+        
+        .blurb-tags {
+            background-color: #e8e8e8;
+            padding: 8px 15px;
+            font-size: 0.85em;
+            border-bottom: 1px solid #ddd;
+            color: #333;
+        }
+        
+        .tag-category { font-weight: bold; margin-right: 5px; }
+        
+        .blurb-summary { padding: 15px; color: #111; line-height: 1.6; }
+        
+        .blurb-footer {
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            border-top: 1px dashed #ccc;
+            text-align: right;
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        .remove-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .remove-btn:hover { background-color: #000; }
+    </style>
+</head>
+<body>
+    
+    <div class="dashboard-container">
+        <h2>{{username}}'s Bookmarks</h2>
+        <hr>
+
+        {{#bookmarks}}
+        <div class="bookmark-blurb">
+            <div class="blurb-header">
+                <div>
+                    <a href="/book/{{book.id}}">{{book.title}}</a>
+                    <span class="author-text">by {{book.authorName}}</span>
+                </div>
+            </div>
+
+            <div class="blurb-tags">
+                <span class="tag-category">Category:</span> 
+                {{#book.category}}{{book.category}}{{/book.category}}
+                {{^book.category}}Uncategorized{{/book.category}} 
+                &nbsp;&nbsp;
+                
+                <span class="tag-category">Class:</span> 
+                {{#book.locClass}}{{book.locClass}}{{/book.locClass}}
+                {{^book.locClass}}Not Classified{{/book.locClass}}
+            </div>
+
+            <div class="blurb-summary">
+                <p>
+                    {{#book.synopsis}}{{book.synopsis}}{{/book.synopsis}}
+                    {{^book.synopsis}}No synopsis available for this title.{{/book.synopsis}}
+                </p>
+            </div>
+
+            <div class="blurb-footer">
+                Bookmarked on: {{createdAt}}
+                
+                <form action="/bookmarks/remove" method="post" style="display:inline; margin-left: 15px;">
+                    <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
+                    <input type="hidden" name="bookId" value="{{book.id}}"/>
+                    <button type="submit" class="remove-btn">Remove Bookmark</button>
+                </form>
+            </div>
+        </div>
+        {{/bookmarks}}
+
+        {{^bookmarks}}
+            <p>You haven't bookmarked any lore yet! Go explore the archives.</p>
+        {{/bookmarks}}
+        
+        <br>
+        <a href="/">← Back to Archive</a>
+    </div>
+
+</body>
+</html>

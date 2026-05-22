@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - StoryLoom</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .admin-form-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border: 1px solid #ddd; border-radius: 6px; }
+        .upload-form-group { margin-bottom: 20px; display: block; }
+        .upload-form-group label { display: block; font-weight: bold; margin-bottom: 5px; text-align: left; width: auto; }
+        .upload-form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        h3 { border-bottom: 2px solid #0056b3; padding-bottom: 5px; margin-top: 30px; }
+        .submit-btn { background-color: #0056b3; color: white; padding: 12px 24px; border: none; font-size: 1.1em; cursor: pointer; border-radius: 4px; }
+        .submit-btn:hover { background-color: #003d82; }
+        .dynamic-select { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+        <div class="admin-form-container">
+            <h1>Upload to Archive</h1>
+            <form action="/admin/add-book" method="POST" enctype="multipart/form-data">
+                
+                <h3>1. Core Metadata</h3>
+                <div class="upload-form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" class="upload-form-control" required>
+                </div>
+                <div class="upload-form-group">
+                    <label>Author</label>
+                    <input type="text" name="authorName" class="upload-form-control" required>
+                </div>
+                <div class="upload-form-group">
+                    <label>Original Publish Year</label>
+                    <input type="number" name="publishYear" class="upload-form-control">
+                </div>
+                <div class="upload-form-group">
+                    <label>Language</label>
+                    <select name="language" class="upload-form-control">
+                        <option value="English">English</option>
+                        <option value="Vietnamese">Vietnamese</option>
+                    </select>
+                </div>
+                
+                <div class="upload-form-group">
+                    <label>Categories (Subjects)</label>
+                    <div id="category-container">
+                        <select name="category" class="upload-form-control dynamic-select">
+                            <option value="">-- Select a Subject (Optional) --</option>
+                            <optgroup label="Literature & Fiction">
+                                <option value="Adventure">Adventure</option>
+                                <option value="American Literature">American Literature</option>
+                                <option value="Arthurian Legends">Arthurian Legends</option>
+                                <option value="Classics of Literature">Classics of Literature</option>
+                                <option value="Crime Fiction">Crime Fiction</option>
+                                <option value="Detective Fiction">Detective Fiction</option>
+                                <option value="Folklore">Folklore</option>
+                                <option value="Gothic Fiction">Gothic Fiction</option>
+                                <option value="Historical Fiction">Historical Fiction</option>
+                                <option value="Humour">Humour</option>
+                                <option value="Literature - Other">Literature - Other</option>
+                                <option value="Mythology">Mythology</option>
+                                <option value="Novels">Novels</option>
+                                <option value="Poetry">Poetry</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Russian Literature">Russian Literature</option>
+                                <option value="Science-Fiction & Fantasy">Science-Fiction & Fantasy</option>
+                                <option value="Short Stories">Short Stories</option>
+                            </optgroup>
+                            <optgroup label="Children & Young Adult">
+                                <option value="Children's Fiction">Children's Fiction</option>
+                                <option value="Children's Literature">Children's Literature</option>
+                                <option value="Children's Myths, Fairy Tales, etc.">Children's Myths, Fairy Tales, etc.</option>
+                                <option value="Children's Religion">Children's Religion</option>
+                            </optgroup>
+                            <optgroup label="Science & Technology">
+                                <option value="Astronomy">Astronomy</option>
+                                <option value="Botany">Botany</option>
+                                <option value="Ecology">Ecology</option>
+                                <option value="Geology">Geology</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Microbiology">Microbiology</option>
+                                <option value="Physiology">Physiology</option>
+                                <option value="Science - Biology">Science - Biology</option>
+                                <option value="Science - Chemistry/Biochemistry">Science - Chemistry/Biochemistry</option>
+                                <option value="Science - Earth/Agricultural/Farming">Science - Earth/Agricultural/Farming</option>
+                                <option value="Science - Physics">Science - Physics</option>
+                            </optgroup>
+                            <optgroup label="Social Sciences & Society">
+                                <option value="Economics">Economics</option>
+                                <option value="Law & Criminology">Law & Criminology</option>
+                            </optgroup>
+                            <optgroup label="History">
+                                <option value="Classical Antiquity">Classical Antiquity</option>
+                                <option value="History - American">History - American</option>
+                                <option value="History - British">History - British</option>
+                                <option value="History - Modern (1750+)">History - Modern (1750+)</option>
+                                <option value="History - Other">History - Other</option>
+                                <option value="History - Religious">History - Religious</option>
+                                <option value="History - Royalty">History - Royalty</option>
+                                <option value="History - Warfare">History - Warfare</option>
+                            </optgroup>
+                            <optgroup label="Religion & Philosophy">
+                                <option value="Buddhism">Buddhism</option>
+                                <option value="Christianity">Christianity</option>
+                                <option value="Hinduism">Hinduism</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Judaism">Judaism</option>
+                                <option value="Paganism">Paganism</option>
+                                <option value="Religion/Spirituality">Religion/Spirituality</option>
+                            </optgroup>
+                            <optgroup label="Education & Reference">
+                                <option value="Teaching & Education">Teaching & Education</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="upload-form-group">
+                    <label>Synopsis</label>
+                    <textarea name="synopsis" rows="5" class="upload-form-control"></textarea>
+                </div>
+
+                <h3>2. Archival Metadata</h3>
+                <div class="upload-form-group">
+                    <label>Library of Congress (LoC) Main Class (Optional)</label>
+                    <!-- Note: None of these are required -->
+                    <select id="locMainClass" name="locMainClass" class="upload-form-control">
+                        <option value="">-- No LoC Classification --</option>
+                        <option value="A: General Works">A: General Works</option>
+                        <option value="B: Philosophy, Psychology, Religion">B: Philosophy, Psychology, Religion</option>
+                        <option value="C: Auxiliary Sciences of History">C: Auxiliary Sciences of History</option>
+                        <option value="D: World History">D: World History</option>
+                        <option value="E: History of the Americas">E: History of the Americas</option>
+                        <option value="F: History of the Americas">F: History of the Americas</option>
+                        <option value="G: Geography, Anthropology, Recreation">G: Geography, Anthropology, Recreation</option>
+                        <option value="H: Social Sciences">H: Social Sciences</option>
+                        <option value="J: Political Science">J: Political Science</option>
+                        <option value="K: Law">K: Law</option>
+                        <option value="L: Education">L: Education</option>
+                        <option value="M: Music">M: Music</option>
+                        <option value="N: Fine Arts">N: Fine Arts</option>
+                        <option value="P: Language and Literature">P: Language and Literature</option>
+                        <option value="Q: Science">Q: Science</option>
+                        <option value="R: Medicine">R: Medicine</option>
+                        <option value="S: Agriculture">S: Agriculture</option>
+                        <option value="T: Technology">T: Technology</option>
+                        <option value="U: Military Science">U: Military Science</option>
+                        <option value="V: Naval Science">V: Naval Science</option>
+                        <option value="Z: Bibliography, Library Science">Z: Bibliography, Library Science</option>
+                    </select>
+                </div>
+                
+                <div class="upload-form-group">
+                    <label>LoC Subclass (Optional)</label>
+                    <select id="locSubClass" name="locSubClass" class="upload-form-control" disabled>
+                        <option value="">-- Select Main Class First --</option>
+                    </select>
+                </div>
+
+                <h3>3. File Uploads</h3>
+                <div class="upload-form-group">
+                    <label>Cover Image (JPG/PNG)</label>
+                    <input type="file" name="coverImage" class="upload-form-control" accept="image/*">
+                </div>
+                <div class="upload-form-group">
+                    <label>Plain Text File (.txt)</label>
+                    <input type="file" name="textFile" class="upload-form-control" accept=".txt">
+                </div>
+                <div class="upload-form-group">
+                    <label>EPUB File (.epub)</label>
+                    <input type="file" name="epubFile" class="upload-form-control" accept=".epub">
+                </div>
+
+                <button type="submit" class="submit-btn">Upload Book to Database</button>
+            </form>
+        </div>
+    </main>
+
+    {{> footer}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- 1. Subject Duplication Logic ---
+            const catContainer = document.getElementById('category-container');
+            function handleCategoryChange(event) {
+                const selects = catContainer.querySelectorAll('select');
+                const changedSelect = event.target;
+                if (changedSelect.value !== "" && changedSelect === selects[selects.length - 1]) {
+                    const newSelect = changedSelect.cloneNode(true);
+                    newSelect.value = ""; 
+                    newSelect.addEventListener('change', handleCategoryChange);
+                    catContainer.appendChild(newSelect);
+                }
+            }
+            const initialCatSelect = catContainer.querySelector('select');
+            if(initialCatSelect) initialCatSelect.addEventListener('change', handleCategoryChange);
+
+
+            // --- 2. Fully Populated LoC Dictionary ---
+            const locSubclasses = {
+                "A: General Works": [
+                    "AC: Collections. Series", "AE: Encyclopedias", "AG: Dictionaries", "AI: Indexes", "AM: Museums", "AN: Newspapers", "AP: Periodicals", "AS: Academies and learned societies", "AY: Yearbooks. Almanacs", "AZ: History of scholarship"
+                ],
+                "B: Philosophy, Psychology, Religion": [
+                    "B: Philosophy (General)", "BC: Logic", "BD: Speculative philosophy", "BF: Psychology", "BH: Aesthetics", "BJ: Ethics", "BL: Religions. Mythology", "BM: Judaism", "BP: Islam. Bahaism", "BQ: Buddhism", "BR: Christianity", "BS: The Bible", "BT: Doctrinal Theology", "BV: Practical Theology", "BX: Christian Denominations"
+                ],
+                "C: Auxiliary Sciences of History": [
+                    "CB: History of Civilization", "CC: Archaeology", "CD: Diplomatics. Archives", "CE: Chronology", "CJ: Numismatics", "CN: Inscriptions", "CR: Heraldry", "CS: Genealogy", "CT: Biography"
+                ],
+                "D: World History": [
+                    "D: History (General)", "DA: Great Britain", "DAW: Central Europe", "DB: Austria. Liechtenstein. Hungary", "DC: France. Andorra. Monaco", "DD: Germany", "DE: Greco-Roman World", "DF: Greece", "DG: Italy", "DH: Low Countries", "DJ: Netherlands", "DK: Russia. Soviet Union", "DL: Northern Europe", "DP: Spain. Portugal", "DQ: Switzerland", "DR: Balkan Peninsula", "DS: Asia", "DT: Africa", "DU: Oceania", "DX: Romani"
+                ],
+                // E and F do not have subclasses in the standard LoC system
+                "G: Geography, Anthropology, Recreation": [
+                    "G: Geography (General)", "GA: Mathematical geography", "GB: Physical geography", "GC: Oceanography", "GE: Environmental Sciences", "GF: Human ecology", "GN: Anthropology", "GR: Folklore", "GT: Manners and customs", "GV: Recreation. Leisure"
+                ],
+                "H: Social Sciences": [
+                    "H: Social sciences (General)", "HA: Statistics", "HB: Economic theory", "HC: Economic history", "HD: Industries. Land use", "HE: Transportation", "HF: Commerce", "HG: Finance", "HJ: Public finance", "HM: Sociology", "HN: Social history", "HQ: The family. Marriage. Women", "HS: Societies", "HT: Communities. Classes", "HV: Social pathology. Criminology", "HX: Socialism. Communism"
+                ],
+                "J: Political Science": [
+                    "J: General legislative and executive papers", "JA: Political science (General)", "JC: Political theory", "JF: Political institutions", "JJ: Political institutions (N. America)", "JQ: Political institutions (Asia, Africa)", "JS: Local government", "JV: Colonies and colonization", "JZ: International relations"
+                ],
+                "K: Law": [
+                    "K: Law in general", "KB: Religious law", "KD: United Kingdom", "KE: Canada", "KF: United States", "KG: Latin America", "KH: South America", "KJ: Europe", "KZ: Law of Nations"
+                ],
+                "L: Education": [
+                    "L: Education (General)", "LA: History of education", "LB: Theory and practice", "LC: Special aspects of education", "LD: Individual institutions (US)", "LE: Individual institutions (America)", "LF: Individual institutions (Europe)", "LG: Individual institutions (Asia, Africa)", "LH: College and school magazines", "LJ: Student fraternities", "LT: Textbooks"
+                ],
+                "M: Music": [
+                    "M: Music", "ML: Literature on music", "MT: Instruction and study"
+                ],
+                "N: Fine Arts": [
+                    "N: Visual arts", "NA: Architecture", "NB: Sculpture", "NC: Drawing. Design", "ND: Painting", "NE: Print media", "NK: Decorative arts", "NX: Arts in general"
+                ],
+                "P: Language and Literature": [
+                    "P: Philology. Linguistics", "PA: Greek and Latin", "PB: Modern languages. Celtic", "PC: Romanic", "PD: Germanic. Scandinavian", "PE: English", "PF: West Germanic", "PG: Slavic. Baltic", "PH: Uralic. Basque", "PJ: Oriental", "PK: Indo-Iranian", "PL: Languages of Eastern Asia", "PM: Indigenous languages", "PN: Literature (General)", "PQ: French, Italian, Spanish, Portuguese", "PR: English literature", "PS: American literature", "PT: German, Dutch, Scandinavian", "PZ: Fiction and juvenile belles lettres"
+                ],
+                "Q: Science": [
+                    "Q: Science (General)", "QA: Mathematics", "QB: Astronomy", "QC: Physics", "QD: Chemistry", "QE: Geology", "QH: Natural history", "QK: Botany", "QL: Zoology", "QM: Human anatomy", "QP: Physiology", "QR: Microbiology"
+                ],
+                "R: Medicine": [
+                    "R: Medicine (General)", "RA: Public aspects", "RB: Pathology", "RC: Internal medicine", "RD: Surgery", "RE: Ophthalmology", "RF: Otorhinolaryngology", "RG: Gynecology", "RJ: Pediatrics", "RK: Dentistry", "RL: Dermatology", "RM: Therapeutics", "RS: Pharmacy", "RT: Nursing", "RV: Botanic, Thomsonian", "RX: Homeopathy", "RZ: Other systems"
+                ],
+                "S: Agriculture": [
+                    "S: Agriculture (General)", "SB: Plant culture", "SD: Forestry", "SF: Animal culture", "SH: Aquaculture", "SK: Hunting sports"
+                ],
+                "T: Technology": [
+                    "T: Technology (General)", "TA: Engineering", "TC: Hydraulic engineering", "TD: Environmental technology", "TE: Highway engineering", "TF: Railroad engineering", "TG: Bridge engineering", "TH: Building construction", "TJ: Mechanical engineering", "TK: Electrical engineering", "TL: Motor vehicles. Aeronautics", "TN: Mining engineering", "TP: Chemical technology", "TR: Photography", "TS: Manufactures", "TT: Handicrafts", "TX: Home economics"
+                ],
+                "U: Military Science": [
+                    "U: Military science (General)", "UA: Armies", "UB: Military administration", "UC: Maintenance and transportation", "UD: Infantry", "UE: Cavalry", "UF: Artillery", "UG: Military engineering", "UH: Other services"
+                ],
+                "V: Naval Science": [
+                    "V: Naval science (General)", "VA: Navies", "VB: Naval administration", "VC: Naval maintenance", "VD: Naval seamen", "VE: Marines", "VF: Naval ordnance", "VG: Minor services of navies", "VK: Navigation. Merchant marine", "VM: Naval architecture"
+                ],
+                "Z: Bibliography, Library Science": [
+                    "Z: Books. Writing. Paleography", "ZA: Information resources (General)"
+                ]
+            };
+
+            const mainSelect = document.getElementById('locMainClass');
+            const subSelect = document.getElementById('locSubClass');
+
+            mainSelect.addEventListener('change', function() {
+                const selectedMain = this.value;
+                
+                subSelect.innerHTML = '<option value="">-- Select a Subclass (Optional) --</option>';
+                
+                if (selectedMain && locSubclasses[selectedMain]) {
+                    subSelect.disabled = false;
+                    locSubclasses[selectedMain].forEach(function(subclass) {
+                        const option = document.createElement('option');
+                        option.value = subclass;
+                        option.textContent = subclass;
+                        subSelect.appendChild(option);
+                    });
+                } else if (selectedMain === "E: History of the Americas" || selectedMain === "F: History of the Americas") {
+                    subSelect.disabled = true;
+                    subSelect.innerHTML = '<option value="">-- No Subclasses Used for E/F --</option>';
+                } else {
+                    subSelect.disabled = true;
+                    subSelect.innerHTML = '<option value="">-- Select Main Class First --</option>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

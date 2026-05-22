@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - StoryLoom</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { background-color: #f7f9fc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+        
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .auth-card {
+            display: flex;
+            width: 100%;
+            max-width: 950px;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 500px;
+        }
+
+        .auth-left {
+            flex: 1;
+            background-color: #eaf2f8; 
+            padding: 80px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .auth-left h1 {
+            font-size: 2.5em;
+            color: #111;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .auth-left p {
+            font-size: 1.3em;
+            color: #555;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .auth-right {
+            flex: 1.1;
+            padding: 50px 60px;
+            background-color: #fff;
+        }
+
+        .btn-google {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            box-sizing: border-box;
+        }
+        .btn-google:hover { background: #f9f9f9; }
+
+        .divider {
+            text-align: center;
+            border-top: 1px solid #ccc;
+            line-height: 0.1em;
+            margin: 10px 0 30px 0;
+            color: #777;
+        }
+        .divider span {
+            background: #fff;
+            padding: 0 10px;
+            font-size: 0.9em;
+        }
+        
+        .intro-text {
+            font-size: 0.95em;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        .intro-text u { color: #0056b3; text-decoration: underline; cursor: pointer; }
+
+        /* FIX: Renamed to auth-form-group to avoid global CSS clash */
+        .auth-form-group { 
+            display: flex;
+            flex-direction: column; /* FORCES vertical stacking */
+            margin-bottom: 20px; 
+        }
+        
+        .auth-form-group label {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 1.1em;
+            color: #222;
+        }
+        
+        .forgot-link {
+            font-size: 0.9em;
+            color: #666;
+            text-decoration: underline;
+            margin-bottom: 8px;
+            align-self: flex-start; /* Keeps it neatly aligned to the left */
+        }
+        .forgot-link:hover { color: #333; }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #92bce3;
+            box-shadow: 0 0 5px rgba(146, 188, 227, 0.5);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+            color: #333;
+        }
+        .checkbox-group input { margin-right: 8px; }
+
+        .btn-primary {
+            width: 100%;
+            background-color: #0275d8; 
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1.05em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-primary:hover { background-color: #025aa5; }
+
+        .auth-login-link { text-align: center; margin-top: 30px; font-size: 1em; color: #333; }
+        .auth-login-link a { color: #0056b3; text-decoration: underline; }
+        .auth-login-link a:hover { color: #003d82; }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            
+            <div class="auth-left">
+                <h1>Log In</h1>
+                <p>Log in to use your free StoryLoom account to borrow digital books from our community archive</p>
+            </div>
+
+            <div class="auth-right">
+                
+                <a href="#" class="btn-google">
+                    <span style="color: #4285F4; margin-right: 8px; font-size: 1.2em; font-family: sans-serif;">G</span> Log in with Google
+                </a>
+
+                <div class="divider"><span>OR</span></div>
+                {{#errorMessage}}
+                <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 3px; margin-bottom: 20px; text-align: center; font-weight: bold; font-size: 0.9em; border: 1px solid #f5c6cb;">
+                    {{errorMessage}}
+                </div>
+                {{/errorMessage}}
+
+                {{#successMessage}}
+                <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 3px; margin-bottom: 20px; text-align: center; font-weight: bold; font-size: 0.9em; border: 1px solid #c3e6cb;">
+                    {{successMessage}}
+                </div>
+                {{/successMessage}}
+                <p class="intro-text">Please enter your <u>StoryLoom Archive</u> email and password to access your account.</p>
+
+                <form action="/login" method="POST">
+                    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+                    
+                    <div class="auth-form-group">
+                        <label for="email">Email</label>
+                        <a href="#" class="forgot-link">Forgot your StoryLoom email?</a>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label for="password">Password</label>
+                        <a href="#" class="forgot-link">Forgot your Password?</a>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember" style="font-weight: normal; margin: 0; display: inline;">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Log In</button>
+                    
+                    <div class="auth-login-link">
+                        Don't have an account? <a href="/register">Sign up now</a>.
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    {{> footer}}
+
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} - StoryLoom Digital Archive</title>
+    <link rel="stylesheet" href="/style.css">
+    
+    <style>
+        .synopsis-text.collapsed { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .read-more-btn { background: none; border: none; color: #0056b3; cursor: pointer; padding: 0; font-weight: bold; margin-top: 5px; font-size: 0.9em; display: none; }
+        .read-more-btn:hover { text-decoration: underline; }
+
+        .gutenberg-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 25px; }
+        .gutenberg-table th, .gutenberg-table td { border: 1px solid #d3d3d3; padding: 8px 12px; text-align: left; vertical-align: middle; }
+        .gutenberg-table th { background-color: #ebebeb; font-weight: bold; }
+        .gutenberg-table th.options-col { width: 80%; }
+        .gutenberg-table th.size-col { width: 20%; }
+        .gutenberg-table td.icon-col { width: 1%; white-space: nowrap; text-align: center; padding-right: 10px; padding-left: 10px; }
+        .gutenberg-table td.size-col { color: #333; }
+        .gutenberg-table a.download-link { color: #0056b3; text-decoration: underline; }
+        .gutenberg-table a.download-link:hover { color: #003d82; }
+        
+        .read-now-btn { background-color: #d2e4ea; border: 1px solid #b7d1d9; border-radius: 4px; padding: 6px 30px; font-weight: bold; color: #000; text-decoration: none; display: inline-block; }
+        .read-now-btn:hover { background-color: #c0d8e0; }
+    </style>
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+        
+        <div class="breadcrumbs">
+            <a href="/">StoryLoom</a> &rsaquo;
+            <a href="/search">{{ totalBooks }} free eBooks</a> &rsaquo; 
+            <span>{{ book.authorName }}</span>
+        </div>
+
+        <h1 class="book-header-title">{{ book.title }} by {{ book.authorName }}</h1>
+        <hr class="title-divider">
+
+        <div class="book-details-layout">
+            
+            <aside class="book-cover-col">
+                {{#book.coverImagePath}}
+                    <img src="http://127.0.0.1:9000/storyloom-archive/{{ book.coverImagePath }}" alt="Cover" style="width: 100%; border: 1px solid #ccc;">
+                {{/book.coverImagePath}}
+                {{^book.coverImagePath}}
+                    <div class="catalog-book-cover-placeholder" style="width: 100%; height: 300px; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 3em; border: 1px solid #ccc;">📘</div>
+                {{/book.coverImagePath}}
+                
+                <div class="social-share" style="margin-top: 10px; text-align: center; display: flex; justify-content: center; align-items: center;">
+                    <a href="#" title="Share on Twitter" style="text-decoration: none; font-size: 1.5em; margin-right: 10px;">🐦</a>
+                    <a href="#" title="Share on Facebook" style="text-decoration: none; font-size: 1.5em; margin-right: 10px;">📘</a>
+                    
+                    <form action="/bookmarks/add" method="post" style="margin: 0; padding: 0; display: inline-block;">
+                        <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
+                        <input type="hidden" name="bookId" value="{{book.id}}"/>
+                        <button type="submit" title="Bookmark for Later" style="background: none; border: none; font-size: 1.5em; color: #990000; cursor: pointer; padding: 0;">★</button>
+                    </form>
+                </div>
+            </aside>
+
+            <section class="book-info-col">
+                
+                <div class="synopsis-box">
+                    <p class="synopsis-text collapsed" id="synopsis-text">
+                        "{{ book.title }}" by {{ book.authorName }} is a {{ book.category }} publication originally released in {{#book.publishYear}}{{book.publishYear}}{{/book.publishYear}}{{^book.publishYear}}an unknown year{{/book.publishYear}}.
+                        <br><br>
+                        {{ book.synopsis }}
+                    </p>
+                    <button id="read-more-btn" class="read-more-btn">Read More</button>
+                </div>
+
+                <h2 class="section-title">Read or download for free</h2>
+                <p class="table-subtitle">For an overview of the different reading options, see our <a href="/faq">Reading Guide</a></p>
+                
+                <table class="data-table gutenberg-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="options-col">Reading Options</th>
+                            <th class="size-col">Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="icon-col">📘</td>
+                            <td><a href="/read/{{book.id}}" class="read-now-btn" target="_blank">Read now!</a></td>
+                            <td class="size-col">HTML</td>
+                        </tr>
+
+                        {{#book.epubFilePath}}
+                        <tr>
+                            <td class="icon-col">⬇️</td>
+                            <td>
+                                <a href="http://127.0.0.1:9000/storyloom-archive/{{book.epubFilePath}}" class="download-link" download>EPUB</a>
+                            </td>
+                            <td class="size-col">Standard</td>
+                        </tr>
+                        {{/book.epubFilePath}}
+
+                        {{#book.textFilePath}}
+                        <tr>
+                            <td class="icon-col">⬇️</td>
+                            <td>
+                                <a href="http://127.0.0.1:9000/storyloom-archive/{{book.textFilePath}}" class="download-link" download>Plain Text</a>
+                            </td>
+                            <td class="size-col">Standard</td>
+                        </tr>
+                        {{/book.textFilePath}}
+
+                        {{^book.epubFilePath}}
+                            {{^book.textFilePath}}
+                            <tr>
+                                <td colspan="3" style="color: #666; font-style: italic; text-align: center;">No physical files attached to this record yet.</td>
+                            </tr>
+                            {{/book.textFilePath}}
+                        {{/book.epubFilePath}}
+
+                    </tbody>
+                </table>
+
+                <h2 class="section-title">Similar Books</h2>
+                <ul class="similar-books-list" style="margin-bottom: 25px;">
+                    <li><span class="icon">📚</span> <a href="/category?name={{ book.category }}">View all books in Category: {{ book.category }}</a></li>
+                </ul>
+
+                <h3 class="section-title">Readers also downloaded...</h3>
+                <div class="catalog-columns" style="margin-top: 15px; margin-bottom: 40px;">
+                    {{#alsoDownloaded}}
+                    <div class="catalog-book-item">
+                        {{#coverImagePath}}
+                            <img src="http://127.0.0.1:9000/storyloom-archive/{{coverImagePath}}" alt="Cover" class="catalog-book-cover">
+                        {{/coverImagePath}}
+                        {{^coverImagePath}}
+                            <div class="catalog-book-cover-placeholder" style="width: 85px; height: 125px; background: #e0e0e0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; color: #666;">No Cover</div>
+                        {{/coverImagePath}}
+                        
+                        <div class="catalog-book-info">
+                            <a href="/book/{{id}}" class="catalog-book-title">{{title}}</a>
+                            <span class="catalog-book-author">{{authorName}}</span>
+                            <span class="catalog-book-downloads">{{downloadCount}} downloads</span>
+                        </div>
+                    </div>
+                    {{/alsoDownloaded}}
+                    
+                    {{^alsoDownloaded}}
+                        <p style="grid-column: 1 / -1; font-style: italic; color: #666;">Not enough data collected yet.</p>
+                    {{/alsoDownloaded}}
+                </div>
+
+                <h2 class="section-title">About this eBook <a href="#" class="info-bubble" style="text-decoration: none;">❓</a></h2>
+                <table class="data-table metadata-table gutenberg-table">
+                    <tbody>
+                        <tr>
+                            <th>Author</th>
+                            <td><a href="/author?name={{ book.authorName }}">{{ book.authorName }}</a></td>
+                        </tr>
+                        <tr>
+                            <th>Original Publication Year</th>
+                            <td>
+                                {{#book.publishYear}}{{book.publishYear}}{{/book.publishYear}}
+                                {{^book.publishYear}}Unknown{{/book.publishYear}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Language</th>
+                            <td>{{ book.language }}</td>
+                        </tr>
+                        <tr>
+                            <th>Subject</th>
+                            <td><a href="/category?name={{ book.category }}">{{ book.category }}</a></td>
+                        </tr>
+                        <tr>
+                            <th>Library of Congress Class</th>
+                            <td>
+                                {{#book.locClass}}{{book.locClass}}{{/book.locClass}}
+                                {{^book.locClass}}Not Classified{{/book.locClass}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>EBook-No.</th>
+                            <td>{{ book.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Release Date</th>
+                            <td>{{ book.releaseDate }}</td>
+                        </tr>
+                        <tr>
+                            <th>Downloads</th>
+                            <td>{{ book.downloadCount }} downloads.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="table-footnote italic" style="color: #666;">StoryLoom eBooks are always free!</p>
+
+            </section>
+
+            {{#currentUser}}
+            <div style="grid-column: 1 / -1; margin-top: 40px; padding: 25px; background-color: #fcfbf8; border: 1px solid #e1dbce; border-left: 4px solid #990000; box-shadow: 2px 2px 5px rgba(0,0,0,0.03);">
+                <h3 style="margin-top: 0; color: #333; display: flex; align-items: center; gap: 8px;">
+                    📝 My Private Notes
+                </h3>
+                <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Use this space to jot down theories, connect lore, or write summaries. These notes are completely private and only visible to you.</p>
+                
+                <form action="/annotations/save" method="POST" style="margin: 0;">
+                    <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
+                    <input type="hidden" name="bookId" value="{{book.id}}"/>
+                    
+                    <textarea name="content" placeholder="Begin typing your notes here..." 
+                              style="width: 100%; height: 150px; padding: 15px; font-family: 'Courier New', Courier, monospace; font-size: 0.95em; border: 1px solid #ccc; border-radius: 4px; resize: vertical; box-sizing: border-box; line-height: 1.5; background-color: #fff;">{{#annotation}}{{content}}{{/annotation}}</textarea>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <span style="font-size: 0.8em; color: #888; font-style: italic;">
+                            {{#annotation}}Last saved: {{lastUpdated}}{{/annotation}}
+                        </span>
+                        <button type="submit" style="background-color: #00635d; color: white; border: none; padding: 8px 20px; cursor: pointer; font-weight: bold; border-radius: 4px;">Save Notes</button>
+                    </div>
+                </form>
+            </div>
+            {{/currentUser}}
+
+        </div>
+    </main>
+
+    {{> footer}}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const textElement = document.getElementById("synopsis-text");
+            const btn = document.getElementById("read-more-btn");
+            if (textElement.scrollHeight > textElement.clientHeight) {
+                btn.style.display = "inline-block";
+            }
+            btn.addEventListener("click", function(e) {
+                e.preventDefault();
+                textElement.classList.toggle("collapsed");
+                if (textElement.classList.contains("collapsed")) {
+                    btn.textContent = "Read More";
+                } else {
+                    btn.textContent = "Read Less";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

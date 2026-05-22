@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Downloaded - StoryLoom</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    {{> header}}
+
+    <main class="container">
+        <div class="text-content stats-content">
+            <h1>Frequently Viewed or Downloaded</h1>
+            
+            <div class="stats-quick-links">
+                <p><strong>Top Books:</strong> <a href="#ebooks-yesterday">Yesterday</a> - <a href="#ebooks-7days">7 days</a> - <a href="#ebooks-30days">30 days</a></p>
+                <p><strong>Top Authors:</strong> <a href="#authors-yesterday">Yesterday</a> - <a href="#authors-7days">7 days</a> - <a href="#authors-30days">30 days</a></p>
+            </div>
+
+            <h2 id="ebooks-yesterday">Top 20 Books yesterday</h2>
+            <ol class="top-100-list">
+                {{#topBooksYesterday}}
+                    <li><a href="/book/{{id}}">{{title}} by {{authorName}}</a></li>
+                {{/topBooksYesterday}}
+                {{^topBooksYesterday}}
+                    <li style="list-style-type: none; font-style: italic; color: #666;">Not enough data collected yet. Check back soon!</li>
+                {{/topBooksYesterday}}
+            </ol>
+
+            <div class="stats-quick-links">
+                <p><strong>Top Books:</strong> <a href="#ebooks-yesterday">Yesterday</a> - <a href="#ebooks-7days">7 days</a> - <a href="#ebooks-30days">30 days</a></p>
+                <p><strong>Top Authors:</strong> <a href="#authors-yesterday">Yesterday</a> - <a href="#authors-7days">7 days</a> - <a href="#authors-30days">30 days</a></p>
+            </div>
+
+            <h2 id="authors-yesterday">Top 20 Authors yesterday</h2>
+            <ol class="top-100-list">
+                {{#topAuthorsYesterday}}
+                    <li><a href="/author?name={{name}}">{{name}}</a></li>
+                {{/topAuthorsYesterday}}
+                {{^topAuthorsYesterday}}
+                    <li style="list-style-type: none; font-style: italic; color: #666;">Not enough data collected yet. Check back soon!</li>
+                {{/topAuthorsYesterday}}
+            </ol>
+
+            <div class="stats-quick-links">
+                <p><strong>Top Books:</strong> <a href="#ebooks-yesterday">Yesterday</a> - <a href="#ebooks-7days">7 days</a> - <a href="#ebooks-30days">30 days</a></p>
+                <p><strong>Top Authors:</strong> <a href="#authors-yesterday">Yesterday</a> - <a href="#authors-7days">7 days</a> - <a href="#authors-30days">30 days</a></p>
+            </div>
+
+            <h2 id="ebooks-7days">Top 20 Books last 7 days</h2>
+            <ol class="top-100-list">
+                {{#topBooks7Days}}
+                    <li><a href="/book/{{id}}">{{title}} by {{authorName}}</a></li>
+                {{/topBooks7Days}}
+                {{^topBooks7Days}}
+                    <li style="list-style-type: none; font-style: italic; color: #666;">Not enough data collected yet. Check back soon!</li>
+                {{/topBooks7Days}}
+            </ol>
+
+            <div class="stats-quick-links">
+                <p><strong>Top Books:</strong> <a href="#ebooks-yesterday">Yesterday</a> - <a href="#ebooks-7days">7 days</a> - <a href="#ebooks-30days">30 days</a></p>
+                <p><strong>Top Authors:</strong> <a href="#authors-yesterday">Yesterday</a> - <a href="#authors-7days">7 days</a> - <a href="#authors-30days">30 days</a></p>
+            </div>
+
+            <h2 id="authors-7days">Top 20 Authors last 7 days</h2>
+            <ol class="top-100-list">
+                {{#topAuthors7Days}}
+                    <li><a href="/author?name={{name}}">{{name}}</a></li>
+                {{/topAuthors7Days}}
+                {{^topAuthors7Days}}
+                    <li style="list-style-type: none; font-style: italic; color: #666;">Not enough data collected yet. Check back soon!</li>
+                {{/topAuthors7Days}}
+            </ol>
+
+            <div class="stats-quick-links">
+                <p><strong>Top Books:</strong> <a href="#ebooks-yesterday">Yesterday</a> - <a href="#ebooks-7days">7 days</a> - <a href="#ebooks-30days">30 days</a></p>
+                <p><strong>Top Authors:</strong> <a href="#authors-yesterday">Yesterday</a> - <a href="#authors-7days">7 days</a> - <a href="#authors-30days">30 days</a></p>
+            </div>
+
+            <h2 id="ebooks-30days">Top 20 Books last 30 days</h2>
+            <ol class="top-100-list">
+                {{#topBooks30Days}}
+                    <li><a href="/book/{{id}}">{{title}} by {{authorName}}</a></li>
+                {{/topBooks30Days}}
+                {{^topBooks30Days}}
+                    <li style="list-style-type: none; font-style: italic; color: #666;">Not enough data collected yet. Check back soon!</li>
+                {{/topBooks30Days}}
+            </ol>
+
+            <div class="stats-quick-links">
+                <p><strong>Top Books:</strong> <a href="#ebooks-yesterday">Yesterday</a> - <a href="#ebooks-7days">7 days</a> - <a href="#ebooks-30days">30 days</a></p>
+                <p><strong>Top Authors:</strong> <a href="#authors-yesterday">Yesterday</a> - <a href="#authors-7days">7 days</a> - <a href="#authors-30days">30 days</a></p>
+            </div>
+
+            <h2 id="authors-30days">Top 20 Authors last 30 days</h2>
+            <ol class="top-100-list">
+                {{#topAuthors30Days}}
+                    <li><a href="/author?name={{name}}">{{name}}</a></li>
+                {{/topAuthors30Days}}
+                {{^topAuthors30Days}}
+                    <li style="list-style-type: none; font-style: italic; color: #666;">Not enough data collected yet. Check back soon!</li>
+                {{/topAuthors30Days}}
+            </ol>
+
+            <div class="stats-quick-links">
+                <p><strong>Top Books:</strong> <a href="#ebooks-yesterday">Yesterday</a> - <a href="#ebooks-7days">7 days</a> - <a href="#ebooks-30days">30 days</a></p>
+                <p><strong>Top Authors:</strong> <a href="#authors-yesterday">Yesterday</a> - <a href="#authors-7days">7 days</a> - <a href="#authors-30days">30 days</a></p>
+            </div>
+
+        </div>
+    </main>
+
+    {{> footer}}
+
+</body>
+</html>
