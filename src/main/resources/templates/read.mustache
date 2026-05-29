@@ -48,7 +48,7 @@
             text-align: left; 
         }
 
-        /* THE FIX: Increased max-width from 900px to 1300px for a much wider reading area */
+        /* Increased max-width for a much wider reading area */
         #viewer { 
             width: 100%; 
             max-width: 1300px; 
@@ -155,53 +155,84 @@
     {{/currentUser}}
 
     <script>
-        var bookUrl = "http://127.0.0.1:9000/storyloom-archive/{{book.epubFilePath}}";
-        var book = ePub(bookUrl);
-        
-        var rendition = book.renderTo("viewer", {
-            manager: "continuous",
-            flow: "scrolled",
-            width: "100%",
-            height: "100%"
-        });
+        const viewerContainer = document.getElementById("viewer");
+        const epubPath = "{{book.epubFilePath}}";
+        const txtPath = "{{book.textFilePath}}";
 
-        rendition.themes.default({
-            "html, body": {
-                "margin": "0 !important",
-                "padding": "0 !important",
-                "max-width": "100% !important",
-                "overflow-x": "hidden !important"
-            },
-            "*": {
-                "max-width": "100% !important",
-                "box-sizing": "border-box !important",
-                "word-wrap": "break-word !important",
-                "overflow-wrap": "break-word !important"
-            },
-            "pre, code, .pgmonospaced": {
-                "white-space": "pre-wrap !important",
-                "word-break": "break-word !important",
-                "font-family": "inherit !important"
-            },
-            "img": {
-                "max-width": "100% !important",
-                "height": "auto !important",
-                "display": "block !important",
-                "margin": "0 auto !important"
-            }
-        });
-        
-        book.ready.then(() => {
-            return rendition.display();
-        }).then(() => {
-            if (book.spine && book.spine.length > 1) {
-                return rendition.display(book.spine.get(1).href);
-            }
-        }).catch(function(err) {
-            console.error("ePub Engine Error:", err);
-            document.getElementById("viewer").innerHTML = "<div style='padding: 50px; text-align: center; color: #990000; font-family: sans-serif;'><h3>Failed to load this eBook.</h3><p>The file formatting may be corrupted or unsupported.</p></div>";
-        });
+        // THE FIX: Hybrid Engine Router
+        if (epubPath && epubPath.trim() !== "") {
+            // ENGINE A: ePub Format
+            var bookUrl = "http://127.0.0.1:9000/storyloom-archive/" + epubPath;
+            var book = ePub(bookUrl);
+            
+            var rendition = book.renderTo("viewer", {
+                manager: "continuous",
+                flow: "scrolled",
+                width: "100%",
+                height: "100%"
+            });
 
+            rendition.themes.default({
+                "html, body": {
+                    "margin": "0 !important",
+                    "padding": "0 !important",
+                    "max-width": "100% !important",
+                    "overflow-x": "hidden !important"
+                },
+                "*": {
+                    "max-width": "100% !important",
+                    "box-sizing": "border-box !important",
+                    "word-wrap": "break-word !important",
+                    "overflow-wrap": "break-word !important"
+                },
+                "pre, code, .pgmonospaced": {
+                    "white-space": "pre-wrap !important",
+                    "word-break": "break-word !important",
+                    "font-family": "inherit !important"
+                },
+                "img": {
+                    "max-width": "100% !important",
+                    "height": "auto !important",
+                    "display": "block !important",
+                    "margin": "0 auto !important"
+                }
+            });
+            
+            book.ready.then(() => {
+                return rendition.display();
+            }).then(() => {
+                if (book.spine && book.spine.length > 1) {
+                    return rendition.display(book.spine.get(1).href);
+                }
+            }).catch(function(err) {
+                console.error("ePub Engine Error:", err);
+                viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #990000; font-family: sans-serif;'><h3>Failed to load this eBook.</h3><p>The file formatting may be corrupted or unsupported.</p></div>";
+            });
+
+        } else if (txtPath && txtPath.trim() !== "") {
+            // ENGINE B: Plain Text Format
+            viewerContainer.style.overflowY = "auto"; // Unlock vertical scrolling for TXT
+            
+            var txtUrl = "http://127.0.0.1:9000/storyloom-archive/" + txtPath;
+            fetch(txtUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.text();
+                })
+                .then(text => {
+                    // Drop the raw text into a pre-wrap container so it matches the ePub aesthetic
+                    viewerContainer.innerHTML = '<pre style="white-space: pre-wrap; font-family: inherit; font-size: inherit; margin: 0; padding: 20px 0;">' + text + '</pre>';
+                })
+                .catch(err => {
+                    console.error("TXT Load Error:", err);
+                    viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #990000; font-family: sans-serif;'><h3>Failed to load Text File.</h3></div>";
+                });
+        } else {
+            // ENGINE C: No Data
+            viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #555; font-family: sans-serif;'><h3>No readable file found for this book.</h3></div>";
+        }
+
+        // --- Sidebar Logic ---
         {{#currentUser}}
         document.addEventListener("DOMContentLoaded", function() {
             const toggleBtn = document.getElementById("notes-toggle");

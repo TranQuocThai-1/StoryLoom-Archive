@@ -4,24 +4,23 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bookmarks")
+@Table(name = "bookmarks", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"user_id", "book_id"})
+})
 public class Bookmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // The user who saved it
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // The book/lore entry they saved
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    // Automatically record exactly when they clicked "Bookmark"
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Bookmark() {}
@@ -31,7 +30,6 @@ public class Bookmark {
         this.book = book;
     }
 
-    // --- Getters and Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public User getUser() { return user; }

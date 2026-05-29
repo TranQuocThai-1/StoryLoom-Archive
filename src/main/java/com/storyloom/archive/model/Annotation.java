@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "annotations")
+@Table(name = "annotations", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"user_id", "book_id"})
+})
 public class Annotation {
 
     @Id
@@ -19,7 +21,6 @@ public class Annotation {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    // We use columnDefinition = "TEXT" because lore notes can get very long!
     @Column(columnDefinition = "TEXT")
     private String content;
 
@@ -33,7 +34,6 @@ public class Annotation {
         this.content = content;
     }
 
-    // --- Getters and Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public User getUser() { return user; }
@@ -43,7 +43,7 @@ public class Annotation {
     public String getContent() { return content; }
     public void setContent(String content) { 
         this.content = content; 
-        this.lastUpdated = LocalDateTime.now(); // Automatically update timestamp when edited
+        this.lastUpdated = LocalDateTime.now(); 
     }
     public LocalDateTime getLastUpdated() { return lastUpdated; }
     public void setLastUpdated(LocalDateTime lastUpdated) { this.lastUpdated = lastUpdated; }

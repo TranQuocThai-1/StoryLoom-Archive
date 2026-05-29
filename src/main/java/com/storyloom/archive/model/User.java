@@ -25,7 +25,6 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Constructors
     public User() {}
 
     public User(String email, String screenName, String password) {

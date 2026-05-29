@@ -28,7 +28,6 @@ public class Book {
     private String textFilePath;
     private String epubFilePath;
 
-    // Empty constructor required by JPA
     public Book() {
     }
 

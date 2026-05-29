@@ -40,7 +40,6 @@ public class NavigationController {
         return "about";
     }
 
-    // --- RESTORED: THE ADMIN DASHBOARD ROUTE ---
     @GetMapping("/admin")
     public String showAdminDashboard() {
         return "admin"; 

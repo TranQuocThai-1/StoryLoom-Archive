@@ -24,7 +24,6 @@ public class BookInteraction {
 
     public BookInteraction() {}
 
-    // UPDATED: Constructor now requires the session ID
     public BookInteraction(Book book, String type, String sessionId) {
         this.book = book;
         this.type = type;

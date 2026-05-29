@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 public interface CollectionRepository extends JpaRepository<Collection, Long> {
     
-    // Finds all custom shelves created by a specific user
     List<Collection> findByUserOrderByNameAsc(User user);
 }

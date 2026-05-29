@@ -1,7 +1,6 @@
-// --- Waiter Logic ---
 async function fetchAndDisplayRegions() {
     try {
-        const response = await fetch('http://localhost:8082/api/regions');
+        const response = await fetch('/api/regions');
     } catch (error) {
         console.error("The Waiter tripped!", error);
     }

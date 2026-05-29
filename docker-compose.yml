@@ -16,12 +16,12 @@ services:
   minio:
     image: minio/minio:latest
     container_name: storyloom-storage
-    # This maps the Docker container to the external folder you just created!
+  
     volumes:
       - C:/StoryLoom_Storage:/data
     ports:
-      - "9000:9000" # The API port (Spring Boot talks to this)
-      - "9001:9001" # The Web Console port (You talk to this)
+      - "9000:9000"
+      - "9001:9001" 
     environment:
       MINIO_ROOT_USER: storyloom_admin
       MINIO_ROOT_PASSWORD: secretpassword

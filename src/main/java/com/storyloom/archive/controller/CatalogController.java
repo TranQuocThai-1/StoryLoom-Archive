@@ -1,8 +1,11 @@
 package com.storyloom.archive.controller;
 
 import com.storyloom.archive.model.Book;
-import com.storyloom.archive.repository.BookRepository;
+import com.storyloom.archive.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +22,10 @@ import java.util.Map;
 @Controller
 public class CatalogController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
+
     @Autowired
-    private BookRepository bookRepository;
+    private BookService bookService;
 
     @GetMapping("/catalog/authors")
     public String browseAuthors(
@@ -28,37 +33,18 @@ public class CatalogController {
             @RequestParam(name = "page", defaultValue = "1") int page,
             Model model) {
             
-        List<Book> allBooks;
-        if ("0-9".equals(letter)) {
-            allBooks = bookRepository.findByAuthorNameStartingWithNumber();
-        } else {
-            allBooks = bookRepository.findByAuthorNameStartingWithIgnoreCaseOrderByAuthorNameAsc(letter);
-        }
-
-        // Pagination logic (50 per page)
+        logger.info("Accessing /catalog/authors?letter={}&page={}", letter, page);
+        
         int pageSize = 50;
-        int totalResults = allBooks.size();
-        int totalPages = (int) Math.ceil((double) totalResults / pageSize);
-        
-        if (page < 1) page = 1;
-        if (totalPages > 0 && page > totalPages) page = totalPages;
-        
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, totalResults);
-        
-        List<Book> pagedBooks = new ArrayList<>();
-        if (totalResults > 0) {
-            pagedBooks = allBooks.subList(startIndex, endIndex);
-        }
+        Page<Book> bookPage = bookService.getBooksByAuthorLetter(letter, page, pageSize);
 
-        model.addAttribute("books", pagedBooks);
+        model.addAttribute("books", bookPage.getContent());
         model.addAttribute("letter", letter);
         model.addAttribute("pageTitle", "Authors - " + letter.toUpperCase());
         model.addAttribute("pageHeading", "Authors starting with " + letter.toUpperCase());
         
-        // Pass the dynamic page numbers to the template
-        model.addAttribute("pages", buildPagination(page, totalPages));
-        model.addAttribute("hasNext", page < totalPages);
+        model.addAttribute("pages", buildPagination(page, bookPage.getTotalPages()));
+        model.addAttribute("hasNext", bookPage.hasNext());
         model.addAttribute("nextPage", page + 1);
 
         return "catalog-results";
@@ -70,35 +56,18 @@ public class CatalogController {
             @RequestParam(name = "page", defaultValue = "1") int page,
             Model model) {
             
-        List<Book> allBooks;
-        if ("0-9".equals(letter)) {
-            allBooks = bookRepository.findByTitleStartingWithNumber();
-        } else {
-            allBooks = bookRepository.findByTitleStartingWithIgnoreCaseOrderByTitleAsc(letter);
-        }
-
+        logger.info("Accessing /catalog/titles?letter={}&page={}", letter, page);
+        
         int pageSize = 50;
-        int totalResults = allBooks.size();
-        int totalPages = (int) Math.ceil((double) totalResults / pageSize);
-        
-        if (page < 1) page = 1;
-        if (totalPages > 0 && page > totalPages) page = totalPages;
-        
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, totalResults);
-        
-        List<Book> pagedBooks = new ArrayList<>();
-        if (totalResults > 0) {
-            pagedBooks = allBooks.subList(startIndex, endIndex);
-        }
+        Page<Book> bookPage = bookService.getBooksByTitleLetter(letter, page, pageSize);
 
-        model.addAttribute("books", pagedBooks);
+        model.addAttribute("books", bookPage.getContent());
         model.addAttribute("letter", letter);
         model.addAttribute("pageTitle", "Titles - " + letter.toUpperCase());
         model.addAttribute("pageHeading", "Titles starting with " + letter.toUpperCase());
         
-        model.addAttribute("pages", buildPagination(page, totalPages));
-        model.addAttribute("hasNext", page < totalPages);
+        model.addAttribute("pages", buildPagination(page, bookPage.getTotalPages()));
+        model.addAttribute("hasNext", bookPage.hasNext());
         model.addAttribute("nextPage", page + 1);
 
         return "catalog-results";
@@ -111,54 +80,39 @@ public class CatalogController {
             @RequestParam(name = "sort", defaultValue = "popularity") String sortParam,
             Model model) {
             
-        Sort sort;
-        if ("alphabetical".equals(sortParam)) {
-            sort = Sort.by(Sort.Direction.ASC, "title");
-        } else if ("date".equals(sortParam)) {
-            sort = Sort.by(Sort.Direction.DESC, "publishYear");
-        } else {
-            sort = Sort.by(Sort.Direction.DESC, "downloadCount"); 
-        }
+        logger.info("Accessing /category?name={}&sort={}&page={}", categoryName, sortParam, page);
             
-        List<Book> allBooks = bookRepository.findByCategoryIgnoreCase(categoryName, sort);
-        
-        int totalResults = allBooks.size();
+        Sort sort = determineSort(sortParam);
         int pageSize = 25; 
-        int totalPages = (int) Math.ceil((double) totalResults / pageSize);
         
-        if (page < 1) page = 1;
-        if (totalPages > 0 && page > totalPages) page = totalPages;
-        
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, totalResults);
-        
-        List<Book> pagedBooks = new ArrayList<>();
-        if (totalResults > 0) {
-            pagedBooks = allBooks.subList(startIndex, endIndex);
-        }
+        Page<Book> bookPage = bookService.getBooksByCategory(categoryName, page, pageSize, sort);
         
         String encodedCategory = "";
         try {
             encodedCategory = URLEncoder.encode(categoryName, StandardCharsets.UTF_8.toString());
         } catch (Exception e) {
+            logger.error("Failed to encode category name: {}", categoryName, e);
             encodedCategory = categoryName;
         }
 
-        model.addAttribute("books", pagedBooks);
+        model.addAttribute("books", bookPage.getContent());
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("encodedCategory", encodedCategory);
-        model.addAttribute("totalResults", totalResults);
+        model.addAttribute("totalResults", bookPage.getTotalElements());
         
         model.addAttribute("currentSort", sortParam);
         model.addAttribute("sortPopularity", "popularity".equals(sortParam));
         model.addAttribute("sortAlphabetical", "alphabetical".equals(sortParam));
         model.addAttribute("sortDate", "date".equals(sortParam));
         
-        model.addAttribute("displayStart", totalResults == 0 ? 0 : startIndex + 1);
-        model.addAttribute("displayEnd", endIndex);
-        model.addAttribute("hasPrev", page > 1);
+        long displayStart = bookPage.getTotalElements() == 0 ? 0 : bookPage.getPageable().getOffset() + 1;
+        long displayEnd = Math.min(displayStart + pageSize - 1, bookPage.getTotalElements());
+        
+        model.addAttribute("displayStart", displayStart);
+        model.addAttribute("displayEnd", displayEnd);
+        model.addAttribute("hasPrev", bookPage.hasPrevious());
         model.addAttribute("prevPage", page - 1);
-        model.addAttribute("hasNext", page < totalPages);
+        model.addAttribute("hasNext", bookPage.hasNext());
         model.addAttribute("nextPage", page + 1);
         
         return "category"; 
@@ -171,88 +125,58 @@ public class CatalogController {
             @RequestParam(name = "sort", defaultValue = "popularity") String sortParam,
             Model model) {
             
-        Sort sort;
-        if ("alphabetical".equals(sortParam)) {
-            sort = Sort.by(Sort.Direction.ASC, "title");
-        } else if ("date".equals(sortParam)) {
-            sort = Sort.by(Sort.Direction.DESC, "publishYear");
-        } else {
-            sort = Sort.by(Sort.Direction.DESC, "downloadCount");
-        }
+        logger.info("Accessing /author?name={}&sort={}&page={}", authorName, sortParam, page);
             
-        List<Book> allBooks = bookRepository.findByAuthorNameIgnoreCase(authorName, sort);
-        
-        int totalResults = allBooks.size();
+        Sort sort = determineSort(sortParam);
         int pageSize = 25; 
-        int totalPages = (int) Math.ceil((double) totalResults / pageSize);
         
-        if (page < 1) page = 1;
-        if (totalPages > 0 && page > totalPages) page = totalPages;
-        
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, totalResults);
-        
-        List<Book> pagedBooks = new ArrayList<>();
-        if (totalResults > 0) {
-            pagedBooks = allBooks.subList(startIndex, endIndex);
-        }
+        Page<Book> bookPage = bookService.getBooksBySpecificAuthor(authorName, page, pageSize, sort);
         
         String encodedAuthor = "";
         try {
             encodedAuthor = URLEncoder.encode(authorName, StandardCharsets.UTF_8.toString());
         } catch (Exception e) {
+            logger.error("Failed to encode author name: {}", authorName, e);
             encodedAuthor = authorName;
         }
 
-        model.addAttribute("books", pagedBooks);
+        model.addAttribute("books", bookPage.getContent());
         model.addAttribute("authorName", authorName);
         model.addAttribute("encodedAuthor", encodedAuthor);
-        model.addAttribute("totalResults", totalResults);
+        model.addAttribute("totalResults", bookPage.getTotalElements());
         
         model.addAttribute("currentSort", sortParam);
         model.addAttribute("sortPopularity", "popularity".equals(sortParam));
         model.addAttribute("sortAlphabetical", "alphabetical".equals(sortParam));
         model.addAttribute("sortDate", "date".equals(sortParam));
         
-        model.addAttribute("displayStart", totalResults == 0 ? 0 : startIndex + 1);
-        model.addAttribute("displayEnd", endIndex);
-        model.addAttribute("hasPrev", page > 1);
+        long displayStart = bookPage.getTotalElements() == 0 ? 0 : bookPage.getPageable().getOffset() + 1;
+        long displayEnd = Math.min(displayStart + pageSize - 1, bookPage.getTotalElements());
+
+        model.addAttribute("displayStart", displayStart);
+        model.addAttribute("displayEnd", displayEnd);
+        model.addAttribute("hasPrev", bookPage.hasPrevious());
         model.addAttribute("prevPage", page - 1);
-        model.addAttribute("hasNext", page < totalPages);
+        model.addAttribute("hasNext", bookPage.hasNext());
         model.addAttribute("nextPage", page + 1);
         
         return "author"; 
     }
 
-    // --- NEW QUICK ACTION ROUTES ---
-
     @GetMapping("/catalog/popular")
     public String browsePopular(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
-        // Fetch ALL books sorted by highest download count
-        List<Book> allBooks = bookRepository.findAll(Sort.by(Sort.Direction.DESC, "downloadCount"));
-
+        logger.info("Accessing /catalog/popular?page={}", page);
+        
         int pageSize = 50;
-        int totalResults = allBooks.size();
-        int totalPages = (int) Math.ceil((double) totalResults / pageSize);
-        
-        if (page < 1) page = 1;
-        if (totalPages > 0 && page > totalPages) page = totalPages;
-        
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, totalResults);
-        
-        List<Book> pagedBooks = new ArrayList<>();
-        if (totalResults > 0) {
-            pagedBooks = allBooks.subList(startIndex, endIndex);
-        }
+        Page<Book> bookPage = bookService.getAllBooksPaged(page, pageSize, Sort.by(Sort.Direction.DESC, "downloadCount"));
 
-        model.addAttribute("books", pagedBooks);
-        model.addAttribute("letter", "popular"); // Retains URL parameters
+        model.addAttribute("books", bookPage.getContent());
+        model.addAttribute("letter", "popular"); 
         model.addAttribute("pageTitle", "Most Popular Books");
         model.addAttribute("pageHeading", "Most Popular Books in the Archive");
         
-        model.addAttribute("pages", buildPagination(page, totalPages));
-        model.addAttribute("hasNext", page < totalPages);
+        model.addAttribute("pages", buildPagination(page, bookPage.getTotalPages()));
+        model.addAttribute("hasNext", bookPage.hasNext());
         model.addAttribute("nextPage", page + 1);
 
         return "catalog-results";
@@ -260,31 +184,18 @@ public class CatalogController {
 
     @GetMapping("/catalog/new")
     public String browseNewReleases(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
-        // Fetch ALL books sorted by newest ID
-        List<Book> allBooks = bookRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-
+        logger.info("Accessing /catalog/new?page={}", page);
+        
         int pageSize = 50;
-        int totalResults = allBooks.size();
-        int totalPages = (int) Math.ceil((double) totalResults / pageSize);
-        
-        if (page < 1) page = 1;
-        if (totalPages > 0 && page > totalPages) page = totalPages;
-        
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, totalResults);
-        
-        List<Book> pagedBooks = new ArrayList<>();
-        if (totalResults > 0) {
-            pagedBooks = allBooks.subList(startIndex, endIndex);
-        }
+        Page<Book> bookPage = bookService.getAllBooksPaged(page, pageSize, Sort.by(Sort.Direction.DESC, "id"));
 
-        model.addAttribute("books", pagedBooks);
+        model.addAttribute("books", bookPage.getContent());
         model.addAttribute("letter", "new"); 
         model.addAttribute("pageTitle", "New Releases");
         model.addAttribute("pageHeading", "Recently Added to the Archive");
         
-        model.addAttribute("pages", buildPagination(page, totalPages));
-        model.addAttribute("hasNext", page < totalPages);
+        model.addAttribute("pages", buildPagination(page, bookPage.getTotalPages()));
+        model.addAttribute("hasNext", bookPage.hasNext());
         model.addAttribute("nextPage", page + 1);
 
         return "catalog-results";
@@ -292,22 +203,31 @@ public class CatalogController {
 
     @GetMapping("/catalog/random")
     public String browseRandom(Model model) {
-        // Fetch exactly 20 random books via native SQL
-        List<Book> randomBooks = bookRepository.findRandom20Books();
+        logger.info("Accessing /catalog/random");
+        
+        List<Book> randomBooks = bookService.getRandomBooks();
 
         model.addAttribute("books", randomBooks);
         model.addAttribute("letter", "random");
         model.addAttribute("pageTitle", "Random Suggestions");
         model.addAttribute("pageHeading", "Random Suggestions (Refresh the page for more!)");
         
-        // Pass an empty pagination list so the 1, 2, 3 buttons hide themselves
         model.addAttribute("pages", new ArrayList<>());
         model.addAttribute("hasNext", false);
 
         return "catalog-results";
     }
 
-    // Helper method to generate the list of page numbers for the Mustache template
+    private Sort determineSort(String sortParam) {
+        if ("alphabetical".equals(sortParam)) {
+            return Sort.by(Sort.Direction.ASC, "title");
+        } else if ("date".equals(sortParam)) {
+            return Sort.by(Sort.Direction.DESC, "publishYear");
+        } else {
+            return Sort.by(Sort.Direction.DESC, "downloadCount");
+        }
+    }
+
     private List<Map<String, Object>> buildPagination(int currentPage, int totalPages) {
         List<Map<String, Object>> pages = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
