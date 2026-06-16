@@ -78,3 +78,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// ==========================================
+// --- AI GLOBAL WIDGET LOGIC ---
+// ==========================================
+
+function toggleAiChat() {
+    const widget = document.getElementById('ai-chat-widget');
+    const btn = document.getElementById('ai-toggle-btn');
+    widget.classList.toggle('ai-widget-collapsed');
+    btn.innerText = widget.classList.contains('ai-widget-collapsed') ? '▲' : '▼';
+}
+
+function handleAiKeyPress(e) {
+    if (e.key === 'Enter') sendAiMessage();
+}
+
+async function sendAiMessage() {
+    const input = document.getElementById('ai-user-input');
+    const history = document.getElementById('ai-chat-history');
+    const text = input.value.trim();
+    
+    if (!text) return;
+
+    history.innerHTML += `<div class="ai-message ai-user">${text}</div>`;
+    input.value = '';
+    
+    const responseId = 'ai-resp-' + Date.now();
+    history.innerHTML += `<div id="${responseId}" class="ai-message ai-system">...</div>`;
+    history.scrollTop = history.scrollHeight;
+
+    try {
+        const response = await fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: text })
+        });
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let fullResponse = "";
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split("\n");
+            
+            for (let line of lines) {
+                if (line.startsWith("data:")) {
+                    fullResponse += line.replace("data:", "");
+                    document.getElementById(responseId).innerHTML = fullResponse.replace(/\n/g, '<br>');
+                    history.scrollTop = history.scrollHeight;
+                }
+            }
+        }
+    } catch (error) {
+        document.getElementById(responseId).innerText = "Error connecting to AI.";
+    }
+}

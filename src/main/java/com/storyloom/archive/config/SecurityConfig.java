@@ -26,8 +26,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            // 1. Disable CSRF security specifically for the AI API endpoints so the JS fetch works
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/ai/**"))
+            
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/search/**", "/catalog/**", "/book/**", "/read/**", "/author/**", "/category/**", "/style.css", "/app.js").permitAll()
+                // 2. Whitelist the /api/ai/** paths so anyone can chat with the Librarian
+                .requestMatchers("/", "/search/**", "/catalog/**", "/book/**", "/read/**", "/author/**", "/category/**", "/style.css", "/app.js", "/api/ai/**").permitAll()
                 .requestMatchers("/login", "/register", "/about", "/contact", "/faq", "/terms", "/privacy", "/permissions", "/error").permitAll()
                 
                 .requestMatchers("/admin/**").hasRole("ADMIN")

@@ -10,113 +10,81 @@
     
     <style>
         body { 
-            margin: 0; 
-            padding: 0;
-            background-color: #ffffff; 
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden; 
+            margin: 0; padding: 0; background-color: #ffffff; 
+            font-family: sans-serif; display: flex; flex-direction: column;
+            height: 100vh; overflow: hidden;
         }
 
         #top-bar {
-            height: 50px;
-            flex-shrink: 0; 
-            background: #fcfcfc;
-            border-bottom: 1px solid #eaeaea;
-            display: flex;
-            align-items: center;
-            padding: 0 25px;
-            z-index: 100;
+            height: 50px; flex-shrink: 0; background: #fcfcfc;
+            border-bottom: 1px solid #eaeaea; display: flex; align-items: center;
+            padding: 0 25px; z-index: 100;
         }
 
         #top-bar a { color: #555; text-decoration: none; font-weight: bold; font-size: 14px; transition: color 0.2s; }
         #top-bar a:hover { color: #000; }
 
         #viewer-container { 
-            flex: 1; 
-            width: 100%; 
-            display: flex; 
-            justify-content: center; 
-            overflow: hidden; 
-            background-color: #ffffff;
-            font-family: Georgia, serif !important;
-            color: #222 !important;
-            font-size: 18px !important;
-            line-height: 1.8 !important;
-            text-align: left; 
+            flex: 1; width: 100%; display: flex; justify-content: center; 
+            overflow: hidden; background-color: #ffffff;
+            font-family: Georgia, serif !important; color: #222 !important;
+            font-size: 18px !important; line-height: 1.8 !important; text-align: left; 
         }
 
-        /* Increased max-width for a much wider reading area */
         #viewer { 
-            width: 100%; 
-            max-width: 1300px; 
-            height: 100%; 
-            padding: 20px 40px; 
-            box-sizing: border-box;
-            overflow-x: hidden; 
+            width: 100%; max-width: 1300px; height: 100%; 
+            padding: 20px 40px; box-sizing: border-box; overflow-x: hidden;
         }
 
+        /* --- Personal Notes Sidebar --- */
         #notes-sidebar {
-            position: fixed;
-            top: 50px; 
-            right: -350px; 
-            width: 350px;
-            height: calc(100vh - 50px);
-            background: #fcfbf8;
-            border-left: 1px solid #e1dbce;
-            box-shadow: -4px 0 15px rgba(0,0,0,0.05);
-            transition: right 0.3s ease-in-out;
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
+            position: fixed; top: 50px; right: -350px; width: 350px;
+            height: calc(100vh - 50px); background: #fcfbf8; border-left: 1px solid #e1dbce;
+            box-shadow: -4px 0 15px rgba(0,0,0,0.05); transition: right 0.3s ease-in-out;
+            z-index: 200; display: flex; flex-direction: column;
         }
-
-        #notes-sidebar.open {
-            right: 0; 
-        }
+        #notes-sidebar.open { right: 0; }
 
         #notes-toggle {
-            position: absolute;
-            top: 40%;
-            left: -40px;
-            width: 40px;
-            height: 60px;
-            background-color: #990000;
-            color: white;
-            border: none;
-            border-radius: 5px 0 0 5px;
-            cursor: pointer;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; top: 35%; left: -40px; width: 40px; height: 60px;
+            background-color: #990000; color: white; border: none; border-radius: 5px 0 0 5px;
+            cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
             box-shadow: -2px 0 5px rgba(0,0,0,0.1);
         }
         #notes-toggle:hover { background-color: #7a0000; }
 
-        .sidebar-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
+        .sidebar-content { 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            flex: 1; 
+            overflow: hidden; /* <-- ADD THIS: Forces child elements to scroll instead of expanding the screen */
         }
+        .sidebar-content textarea { flex: 1; width: 100%; padding: 15px; font-family: 'Courier New', Courier, monospace; font-size: 0.95em; border: 1px solid #ccc; border-radius: 4px; resize: none; box-sizing: border-box; line-height: 1.5; margin-top: 10px; margin-bottom: 15px; }
 
-        .sidebar-content textarea {
-            flex: 1;
-            width: 100%;
-            padding: 15px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: none; 
-            box-sizing: border-box;
-            line-height: 1.5;
-            margin-top: 10px;
-            margin-bottom: 15px;
+        /* --- AI Copilot Sidebar --- */
+        #ai-sidebar {
+            position: fixed; top: 50px; right: -350px; width: 350px;
+            height: calc(100vh - 50px); background: #f4f6f9; border-left: 1px solid #d8dfe6;
+            box-shadow: -4px 0 15px rgba(0,0,0,0.05); transition: right 0.3s ease-in-out;
+            z-index: 201; display: flex; flex-direction: column;
         }
+        #ai-sidebar.open { right: 0; }
+
+        #ai-toggle {
+            position: absolute; top: 45%; left: -40px; width: 40px; height: 60px;
+            background-color: #0056b3; color: white; border: none; border-radius: 5px 0 0 5px;
+            cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+        }
+        #ai-toggle:hover { background-color: #004494; }
+
+        #ai-copilot-chat { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px; border-radius: 8px; font-size: 14px; line-height: 1.4; }
+        .msg-system { background: #e3f2fd; color: #0d47a1; align-self: flex-start; }
+        .msg-user { background: #2c3e50; color: white; align-self: flex-end; }
+        .msg-loading { color: #888; font-style: italic; font-size: 12px; align-self: center; }
+        #selected-text-badge { font-size: 11px; background: #fff3cd; color: #856404; padding: 5px; border-radius: 4px; margin-bottom: 8px; display: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
@@ -132,17 +100,13 @@
     {{#currentUser}}
     <div id="notes-sidebar">
         <button id="notes-toggle" title="Toggle Notes">◀</button>
-        
         <div class="sidebar-content">
             <h3 style="margin: 0; color: #333;">📝 My Notes</h3>
             <p style="font-size: 0.85em; color: #666; margin-bottom: 5px;">Your private annotations for this book.</p>
-            
             <form action="/annotations/save" method="POST" style="flex: 1; display: flex; flex-direction: column;">
                 <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
                 <input type="hidden" name="bookId" value="{{book.id}}"/>
-                
                 <textarea name="content" placeholder="Jot down thoughts while you read...">{{#annotation}}{{content}}{{/annotation}}</textarea>
-                
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span style="font-size: 0.75em; color: #888; font-style: italic;">
                         {{#annotation}}Saved: {{lastUpdated}}{{/annotation}}
@@ -154,100 +118,153 @@
     </div>
     {{/currentUser}}
 
+    <div id="ai-sidebar">
+        <button id="ai-toggle" title="Toggle AI Copilot">🤖</button>
+        <div class="sidebar-content" style="padding: 0; overflow: hidden;"> 
+            <div style="background: #2c3e50; color: white; padding: 15px; font-weight: bold;">
+                Reader Copilot
+            </div>
+            <div id="ai-copilot-chat">
+                <div class="msg msg-system">I am your reading assistant. Highlight text to ask a specific question, or type below for a general summary!</div>
+            </div>
+            <div style="padding: 15px; background: white; border-top: 1px solid #ddd;">
+                <div id="selected-text-badge">Context: <span id="badge-text"></span></div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="copilot-input" placeholder="Ask a question..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" onkeypress="if(event.key==='Enter') sendCopilot()">
+                    <button onclick="sendCopilot()" style="background: #2c3e50; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const viewerContainer = document.getElementById("viewer");
         const epubPath = "{{book.epubFilePath}}";
         const txtPath = "{{book.textFilePath}}";
+        
+        // AI State Variables
+        const currentBookId = "{{book.id}}";
+        let activeSelection = "";
 
-        // THE FIX: Hybrid Engine Router
         if (epubPath && epubPath.trim() !== "") {
-            // ENGINE A: ePub Format
             var bookUrl = "http://127.0.0.1:9000/storyloom-archive/" + epubPath;
             var book = ePub(bookUrl);
             
             var rendition = book.renderTo("viewer", {
-                manager: "continuous",
-                flow: "scrolled",
-                width: "100%",
-                height: "100%"
+                manager: "continuous", flow: "scrolled", width: "100%", height: "100%"
             });
 
             rendition.themes.default({
-                "html, body": {
-                    "margin": "0 !important",
-                    "padding": "0 !important",
-                    "max-width": "100% !important",
-                    "overflow-x": "hidden !important"
-                },
-                "*": {
-                    "max-width": "100% !important",
-                    "box-sizing": "border-box !important",
-                    "word-wrap": "break-word !important",
-                    "overflow-wrap": "break-word !important"
-                },
-                "pre, code, .pgmonospaced": {
-                    "white-space": "pre-wrap !important",
-                    "word-break": "break-word !important",
-                    "font-family": "inherit !important"
-                },
-                "img": {
-                    "max-width": "100% !important",
-                    "height": "auto !important",
-                    "display": "block !important",
-                    "margin": "0 auto !important"
-                }
-            });
-            
-            book.ready.then(() => {
-                return rendition.display();
-            }).then(() => {
-                if (book.spine && book.spine.length > 1) {
-                    return rendition.display(book.spine.get(1).href);
-                }
-            }).catch(function(err) {
-                console.error("ePub Engine Error:", err);
-                viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #990000; font-family: sans-serif;'><h3>Failed to load this eBook.</h3><p>The file formatting may be corrupted or unsupported.</p></div>";
+                "html, body": { "margin": "0 !important", "padding": "0 !important", "max-width": "100% !important", "overflow-x": "hidden !important" },
+                "*": { "max-width": "100% !important", "box-sizing": "border-box !important", "word-wrap": "break-word !important", "overflow-wrap": "break-word !important" },
+                "pre, code, .pgmonospaced": { "white-space": "pre-wrap !important", "word-break": "break-word !important", "font-family": "inherit !important" },
+                "img": { "max-width": "100% !important", "height": "auto !important", "display": "block !important", "margin": "0 auto !important" }
             });
 
+            // AI HIGHLIGHT LISTENER
+            rendition.on("selected", function(cfiRange, contents) {
+                book.getRange(cfiRange).then(function (range) {
+                    activeSelection = range.toString().trim();
+                    if (activeSelection.length > 0) {
+                        document.getElementById("selected-text-badge").style.display = "block";
+                        document.getElementById("badge-text").innerText = activeSelection;
+                        
+                        const aiSidebar = document.getElementById('ai-sidebar');
+                        if (!aiSidebar.classList.contains('open')) aiSidebar.classList.add('open');
+                    }
+                });
+            });
+
+            book.ready.then(() => rendition.display())
+                .then(() => { if (book.spine && book.spine.length > 1) return rendition.display(book.spine.get(1).href); })
+                .catch(function(err) {
+                    console.error("ePub Engine Error:", err);
+                    viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #990000; font-family: sans-serif;'><h3>Failed to load this eBook.</h3></div>";
+                });
         } else if (txtPath && txtPath.trim() !== "") {
-            // ENGINE B: Plain Text Format
-            viewerContainer.style.overflowY = "auto"; // Unlock vertical scrolling for TXT
-            
+            viewerContainer.style.overflowY = "auto";
             var txtUrl = "http://127.0.0.1:9000/storyloom-archive/" + txtPath;
             fetch(txtUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Network response was not ok");
-                    return response.text();
-                })
-                .then(text => {
-                    // Drop the raw text into a pre-wrap container so it matches the ePub aesthetic
-                    viewerContainer.innerHTML = '<pre style="white-space: pre-wrap; font-family: inherit; font-size: inherit; margin: 0; padding: 20px 0;">' + text + '</pre>';
-                })
-                .catch(err => {
-                    console.error("TXT Load Error:", err);
-                    viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #990000; font-family: sans-serif;'><h3>Failed to load Text File.</h3></div>";
-                });
+                .then(response => { if (!response.ok) throw new Error("Network error"); return response.text(); })
+                .then(text => { viewerContainer.innerHTML = '<pre style="white-space: pre-wrap; font-family: inherit; font-size: inherit; margin: 0; padding: 20px 0;">' + text + '</pre>'; })
+                .catch(err => { viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #990000; font-family: sans-serif;'><h3>Failed to load Text File.</h3></div>"; });
         } else {
-            // ENGINE C: No Data
-            viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #555; font-family: sans-serif;'><h3>No readable file found for this book.</h3></div>";
+            viewerContainer.innerHTML = "<div style='padding: 50px; text-align: center; color: #555; font-family: sans-serif;'><h3>No readable file found.</h3></div>";
         }
 
         // --- Sidebar Logic ---
-        {{#currentUser}}
         document.addEventListener("DOMContentLoaded", function() {
-            const toggleBtn = document.getElementById("notes-toggle");
-            const sidebar = document.getElementById("notes-sidebar");
+            // Notes Toggle
+            const notesToggle = document.getElementById("notes-toggle");
+            const notesSidebar = document.getElementById("notes-sidebar");
+            if (notesToggle) {
+                notesToggle.addEventListener("click", function() {
+                    notesSidebar.classList.toggle("open");
+                    notesToggle.textContent = notesSidebar.classList.contains("open") ? "▶" : "◀"; 
+                });
+            }
 
-            toggleBtn.addEventListener("click", function() {
-                sidebar.classList.toggle("open");
-                if (sidebar.classList.contains("open")) {
-                    toggleBtn.textContent = "▶"; 
-                } else {
-                    toggleBtn.textContent = "◀"; 
-                }
+            // AI Toggle
+            const aiToggle = document.getElementById("ai-toggle");
+            const aiSidebar = document.getElementById("ai-sidebar");
+            aiToggle.addEventListener("click", function() {
+                aiSidebar.classList.toggle("open");
             });
         });
-        {{/currentUser}}
+
+        async function sendCopilot() {
+    const inputEl = document.getElementById('copilot-input');
+    const chatBox = document.getElementById('ai-copilot-chat');
+    const promptText = inputEl.value.trim();
+    
+    if (!promptText) return;
+
+    chatBox.innerHTML += `<div class="msg msg-user">${promptText}</div>`;
+    inputEl.value = '';
+    
+    const responseId = 'ai-resp-' + Date.now();
+    chatBox.innerHTML += `<div id="${responseId}" class="msg msg-system">...</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    const payload = { 
+        bookId: currentBookId, 
+        prompt: promptText, 
+        currentText: activeSelection !== "" ? activeSelection : "No specific text selected." 
+    };
+
+    try {
+        const response = await fetch('/api/ai/reader-assist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let fullResponse = "";
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split("\n");
+            
+            for (let line of lines) {
+                if (line.startsWith("data:")) {
+                    fullResponse += line.replace("data:", "");
+                    document.getElementById(responseId).innerHTML = fullResponse.replace(/\n/g, '<br>');
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            }
+        }
+        
+        activeSelection = "";
+        document.getElementById("selected-text-badge").style.display = "none";
+    } catch (error) {
+        document.getElementById(responseId).innerText = "Error connecting to AI.";
+    }
+}
     </script>
 
 </body>

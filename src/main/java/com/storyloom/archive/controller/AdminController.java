@@ -3,6 +3,7 @@ package com.storyloom.archive.controller;
 import com.storyloom.archive.model.Book;
 import com.storyloom.archive.service.BookService;
 import com.storyloom.archive.service.FileStorageService;
+import com.storyloom.archive.service.BookEmbeddingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,6 +26,9 @@ public class AdminController {
 
     @Autowired
     private FileStorageService fileStorageService; 
+
+    @Autowired
+    private BookEmbeddingService bookEmbeddingService;
 
     @GetMapping("/admin/add-book") 
     public String showAddBookForm() {
@@ -63,12 +68,14 @@ public class AdminController {
                 }
             }
             
+            String rawBookText = "";
             if (textFile != null && !textFile.isEmpty()) {
                 String filename = textFile.getOriginalFilename();
                 if (filename == null || !filename.toLowerCase().endsWith(".txt")) {
                     redirectAttributes.addFlashAttribute("errorMessage", "Upload failed: Plain text file must be a .txt format.");
                     return "redirect:/admin";
                 }
+                rawBookText = new String(textFile.getBytes(), StandardCharsets.UTF_8);
             }
             
             if (epubFile != null && !epubFile.isEmpty()) {
@@ -123,6 +130,13 @@ public class AdminController {
 
             newBook = bookService.saveBook(newBook);
             
+            // FEED THE AI
+            if (!rawBookText.isEmpty()) {
+                bookEmbeddingService.embedBookIntoDatabase(newBook, rawBookText);
+            } else if (synopsis != null && !synopsis.isEmpty()) {
+                bookEmbeddingService.embedBookIntoDatabase(newBook, synopsis);
+            }
+
             redirectAttributes.addFlashAttribute("successMessage", "Successfully uploaded: " + newBook.getTitle());
             return "redirect:/admin"; 
 

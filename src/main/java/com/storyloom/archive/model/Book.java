@@ -27,6 +27,9 @@ public class Book {
     private String coverImagePath;
     private String textFilePath;
     private String epubFilePath;
+    
+    // --- NEW FIELD: To tell the importer what to download ---
+    private String gutenbergId;
 
     public Book() {
     }
@@ -52,7 +55,6 @@ public class Book {
     public String getSynopsis() { return synopsis; }
     public void setSynopsis(String synopsis) { this.synopsis = synopsis; }
 
-    // --- NEW GETTER/SETTER FOR LOC CLASS ---
     public String getLocClass() { return locClass; }
     public void setLocClass(String locClass) { this.locClass = locClass; }
 
@@ -70,4 +72,8 @@ public class Book {
 
     public String getEpubFilePath() { return epubFilePath; }
     public void setEpubFilePath(String epubFilePath) { this.epubFilePath = epubFilePath; }
+
+    // --- NEW GETTER/SETTER ---
+    public String getGutenbergId() { return gutenbergId; }
+    public void setGutenbergId(String gutenbergId) { this.gutenbergId = gutenbergId; }
 }

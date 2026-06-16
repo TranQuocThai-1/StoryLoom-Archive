@@ -9,4 +9,20 @@
     </div>
 </footer>
 
+<div id="ai-chat-widget" class="ai-widget-collapsed">
+    <div class="ai-widget-header" onclick="toggleAiChat()">
+        <span>🤖 Ask the Librarian</span>
+        <button id="ai-toggle-btn">▲</button>
+    </div>
+    <div class="ai-widget-body">
+        <div id="ai-chat-history">
+            <div class="ai-message ai-system">Hello! Ask me to recommend a book or find a specific theme in the archive.</div>
+        </div>
+        <div class="ai-widget-input">
+            <input type="text" id="ai-user-input" placeholder="Find me a book about..." onkeypress="handleAiKeyPress(event)">
+            <button onclick="sendAiMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
 <script src="/app.js"></script>
